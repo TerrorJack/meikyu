@@ -1,0 +1,4 @@
+build:
+  prefetch: true
+ghc-options:
+  "$everything": -split-sections
