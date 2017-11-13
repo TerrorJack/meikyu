@@ -38,14 +38,14 @@ stack --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout befd937353bee0f65197317410cde3f49fca521a
+git checkout e3ec2e7ae94524ebd111963faf34b84d942265b4
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.2.1.20171108 --disable-ld-override
+./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171111 --disable-ld-override
 make -j2
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.2.1.20171108.installed
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171111.installed
 cd /root
 
 update-alternatives --remove-all sphinx-apidoc
