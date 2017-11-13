@@ -11,6 +11,7 @@ apk add --no-cache --no-progress --upgrade \
     libgit2-dev \
     libsndfile-dev \
     libxft-dev \
+    libxrandr-dev \
     libzip-dev \
     lmdb-dev \
     mariadb-dev \
