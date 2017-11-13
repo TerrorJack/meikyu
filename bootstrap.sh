@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 apk add --no-cache --no-progress --upgrade \
     cmake \
@@ -67,6 +67,7 @@ stack --no-terminal --verbose --resolver nightly-2017-11-13 install --haddock \
     feed \
     fixed-vector-hetero \
     free-vl \
+    generic-lens \
     ghc-events \
     ghcid \
     git \
