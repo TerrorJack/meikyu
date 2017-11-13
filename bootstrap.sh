@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 apk add --no-cache --no-progress --upgrade \
+    bzip2-dev \
     cmake \
     curl-dev \
     freeglut-dev \
