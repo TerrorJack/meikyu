@@ -138,7 +138,6 @@ stack --no-terminal --resolver nightly-2017-11-13 install --haddock \
     persistent-refs \
     persistent-sqlite \
     persistent-template \
-    picosat \
     pretty-show \
     protobuf-simple \
     protocol-buffers-descriptor \
