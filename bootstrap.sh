@@ -1,26 +1,35 @@
-#!/bin/sh
+#!/bin/sh -e
 
-apk add --no-cache --no-progress --upgrade \
+apk upgrade --no-cache --no-progress
+apk add --no-cache --no-progress \
     autoconf \
     automake \
+    awk \
     binutils-gold \
+    bzip2 \
     ca-certificates \
+    coreutils \
     dpkg \
     file \
+    findutils \
     g++ \
     gawk \
-    gcc \
     ghc \
     git \
     gmp-dev \
     gzip \
     libedit-dev \
     libffi-dev \
+    make \
     musl-dev \
     numactl-dev \
     openssh \
+    patch \
+    perl \
     py3-sphinx \
+    sed \
     tar \
+    xz \
     zlib-dev
 
 update-alternatives --install /usr/bin/sphinx-apidoc sphinx-apidoc /usr/bin/sphinx-apidoc-3 30
@@ -30,7 +39,7 @@ update-alternatives --install /usr/bin/sphinx-quickstart sphinx-quickstart /usr/
 
 mkdir -p /root/.local/bin
 tar xz --wildcards --strip-components=1 -C /root/.local/bin '*/stack' -f /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz
-stack --resolver lts-9 --system-ghc install \
+stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
     hscolour
@@ -43,25 +52,14 @@ git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.2.1.20171108 --disable-ld-override
-make -j2
+make -j4
 make install
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.2.1.20171108.installed
 cd /root
 
-update-alternatives --remove-all sphinx-apidoc
-update-alternatives --remove-all sphinx-autogen
-update-alternatives --remove-all sphinx-build
-update-alternatives --remove-all sphinx-quickstart
-apk del \
-    autoconf \
-    automake \
-    binutils-gold \
-    dpkg \
-    file \
-    g++ \
-    gawk \
-    ghc \
-    py3-sphinx
+stack --no-terminal --resolver nightly install cabal-install
+
+apk del ghc
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
