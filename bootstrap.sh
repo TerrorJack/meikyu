@@ -2,11 +2,9 @@
 
 apk add --no-cache --no-progress --upgrade \
     alsa-lib-dev \
-    binutils-gold \
     bzip2-dev \
     cmake \
     curl-dev \
-    doxygen \
     freeglut-dev \
     g++ \
     icu-dev \
@@ -22,22 +20,10 @@ apk add --no-cache --no-progress --upgrade \
     pcre-dev \
     pkgconfig \
     postgresql-dev \
-    py3-sphinx \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
-    subversion \
     zeromq-dev
-
-cd /tmp
-svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
-cd llvm
-mkdir build
-cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_DOXYGEN:BOOL=ON -DLLVM_DOXYGEN_SVG:BOOL=ON -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON ..
-ninja
-ninja install
-cd /root
 
 stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     accelerate-llvm-native \
@@ -219,14 +205,10 @@ stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     zippers
 
 apk del \
-    binutils-gold \
     cmake \
-    doxygen \
     g++ \
     ninja \
-    pkgconfig \
-    py3-sphinx \
-    subversion
+    pkgconfig
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/llvm
