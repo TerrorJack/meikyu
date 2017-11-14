@@ -3,8 +3,10 @@
 apk add --no-cache --no-progress --upgrade \
     binutils-gold \
     cmake \
+    coreutils \
     doxygen \
     g++ \
+    graphviz \
     ninja \
     pkgconfig \
     py3-sphinx \
@@ -25,6 +27,7 @@ apk del \
     cmake \
     doxygen \
     g++ \
+    graphviz \
     ninja \
     pkgconfig \
     py3-sphinx \
