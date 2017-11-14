@@ -56,6 +56,7 @@ make install
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.2.1.20171108.installed
 cd /root
 
+cp /tmp/config.yaml /root/.stack/
 stack --no-terminal --resolver nightly install cabal-install
 
 apk del ghc
