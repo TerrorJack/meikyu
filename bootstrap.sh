@@ -25,7 +25,7 @@ apk add --no-cache --no-progress --upgrade \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-13 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     accelerate \
     Agda \
     alarmclock \
@@ -168,7 +168,6 @@ stack --no-terminal --resolver nightly-2017-11-13 install --haddock \
     ShellCheck \
     soap-openssl \
     squeal-postgresql \
-    stackage2nix \
     stm-containers \
     stylish-haskell \
     swish \
