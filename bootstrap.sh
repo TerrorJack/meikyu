@@ -37,6 +37,7 @@ cd build
 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LTO=Full -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_DOXYGEN:BOOL=ON -DLLVM_DOXYGEN_SVG:BOOL=ON -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON ..
 ninja
 ninja install
+cd /root
 
 stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     accelerate-llvm-native \
