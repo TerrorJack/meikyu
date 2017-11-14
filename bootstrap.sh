@@ -4,7 +4,6 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
-    awk \
     binutils-gold \
     bzip2 \
     ca-certificates \
