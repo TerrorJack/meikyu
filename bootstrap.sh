@@ -29,6 +29,7 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     accelerate \
     Agda \
     alarmclock \
+    alex \
     apecs \
     apply-refact \
     arithmoi \
@@ -38,12 +39,14 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     bitcoin-api-extra \
     bound \
     brittany \
+    c2hs \
     cabal-install \
     cabal-toolkit \
     cassava \
     Chart-diagrams \
     classy-prelude-yesod \
     compact \
+    cpphs \
     curl \
     dhall \
     dhall-bash \
@@ -83,6 +86,7 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     groundhog-inspector \
     groundhog-mysql \
     groundhog-postgresql \
+    happy \
     hasmin \
     hasql-migration \
     haxl \
@@ -98,8 +102,10 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     hpack \
     hpp \
     hprotoc \
+    hscolour \
     hsndfile-vector \
     hspec-checkers \
+    hspec-discover \
     hworker \
     influxdb \
     inline-c-cpp \
