@@ -9,7 +9,6 @@ apk add --no-cache --no-progress \
     freeglut-dev \
     icu-dev \
     libgit2-dev \
-    liboauth-dev \
     libsndfile-dev \
     libxft-dev \
     libxrandr-dev \
@@ -116,7 +115,6 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     katip-elasticsearch \
     katydid \
     language-java \
-    liboath-hs \
     LibZip \
     lmdb \
     machines-binary \
