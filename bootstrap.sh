@@ -1,14 +1,15 @@
 #!/bin/sh -e
 
-apk add --no-cache --no-progress --upgrade \
+apk upgrade --no-cache --no-progress
+apk add --no-cache --no-progress \
     alsa-lib-dev \
     bzip2-dev \
     cmake \
     curl-dev \
     freeglut-dev \
-    g++ \
     icu-dev \
     libgit2-dev \
+    liboauth-dev \
     libsndfile-dev \
     libxft-dev \
     libxrandr-dev \
@@ -18,15 +19,14 @@ apk add --no-cache --no-progress --upgrade \
     nettle-dev \
     ninja \
     pcre-dev \
-    pkgconfig \
     postgresql-dev \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
-    accelerate-llvm-native \
+stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
+    accelerate \
     Agda \
     alarmclock \
     apecs \
@@ -41,6 +41,7 @@ stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     cabal-install \
     cabal-toolkit \
     cassava \
+    Chart-diagrams \
     classy-prelude-yesod \
     compact \
     curl \
@@ -49,7 +50,6 @@ stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     dhall-json \
     dhall-nix \
     dhall-text \
-    diagrams-svg \
     dimensional \
     direct-rocksdb \
     distributed-closure \
@@ -106,9 +106,11 @@ stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     integration \
     intero \
     irc-client \
+    json-autotype \
     katip-elasticsearch \
     katydid \
     language-java \
+    liboath-hs \
     LibZip \
     lmdb \
     machines-binary \
@@ -204,11 +206,4 @@ stack --no-terminal --resolver nightly-2017-11-14 install --haddock \
     zeromq4-haskell \
     zippers
 
-apk del \
-    cmake \
-    g++ \
-    ninja \
-    pkgconfig
-rm -rf \
-    /tmp/bootstrap.sh \
-    /tmp/llvm
+rm /tmp/bootstrap.sh
