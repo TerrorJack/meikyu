@@ -63,7 +63,7 @@ apk del ghc
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
-    /tmp/ghc
+    /tmp/ghc \
     /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
