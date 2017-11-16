@@ -23,7 +23,6 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_L
 ninja install
 
 cd /root
-ldconfig
 
 rm -rf \
     /tmp/bootstrap.sh \
