@@ -2,22 +2,9 @@
 
 apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
-    boost-dev \
     cmake \
-    libtool \
-    libzip-dev \
     ninja \
-    sqlite-dev \
-    subversion \
-    vim
-
-cd /tmp
-tar xf 5.0.1.tar.gz
-cd cryptominisat-5.0.1
-mkdir build
-cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
-ninja install
+    subversion
 
 cd /tmp
 tar xf z3-4.5.0.tar.gz
@@ -41,7 +28,5 @@ ldconfig
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/llvm \
-    /tmp/5.0.1.tar.gz \
-    /tmp/cryptominisat-5.0.1 \
     /tmp/z3-4.5.0.tar.gz \
     /tmp/z3-z3-4.5.0
