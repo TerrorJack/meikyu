@@ -4,20 +4,12 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     boost-dev \
     cmake \
-    libpng-dev \
     libtool \
     libzip-dev \
     ninja \
     sqlite-dev \
     subversion \
     vim
-
-cd /tmp
-tar xf m4ri-20140914.tar.gz
-cd m4ri-20140914
-./configure --enable-openmp
-make -j4
-make install
 
 cd /tmp
 tar xf 5.0.1.tar.gz
@@ -49,8 +41,6 @@ ldconfig
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/llvm \
-    /tmp/m4ri-20140914.tar.gz \
-    /tmp/m4ri-20140914 \
     /tmp/5.0.1.tar.gz \
     /tmp/cryptominisat-5.0.1 \
     /tmp/z3-4.5.0.tar.gz \
