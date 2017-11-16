@@ -4,6 +4,7 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     boost-dev \
     cmake \
+    libpng-dev \
     libtool \
     libzip-dev \
     ninja \
