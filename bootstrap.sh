@@ -46,14 +46,14 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout 07ac921f48baea84b40835b0b7c476806f7f63f6
+git checkout 2f4638735ad1526d6502a4706bffafffb93e24da
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171115 --disable-ld-override
+./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171116 --disable-ld-override
 make -j4
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171115.installed
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171116.installed
 cd /root
 
 apk del ghc
