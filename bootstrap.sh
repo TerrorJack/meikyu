@@ -4,6 +4,7 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     boost-dev \
     cmake \
+    libtool \
     libzip-dev \
     ninja \
     sqlite-dev \
