@@ -9,10 +9,10 @@ apk add --no-cache --no-progress \
 cd /tmp
 tar xf z3-4.5.0.tar.gz
 cd z3-z3-4.5.0
-mkdir build
+python3 scripts/mk_make.py
 cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
-ninja install
+make -j4
+make install
 
 cd /tmp
 svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
