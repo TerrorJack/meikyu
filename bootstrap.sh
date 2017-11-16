@@ -15,7 +15,6 @@ apk add --no-cache --no-progress \
 cd /tmp
 tar xf m4ri-20140914.tar.gz
 cd m4ri-20140914
-autoreconf --install
 ./configure --enable-openmp
 make -j4
 make install
