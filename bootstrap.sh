@@ -22,10 +22,21 @@ apk add --no-cache --no-progress \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
+    subversion \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
-    accelerate \
+cd /tmp
+svn co https://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm
+cd llvm
+mkdir build
+cd build
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_EH:BOOL=ON -DLLVM_ENABLE_RTTI:BOOL=ON -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON ..
+ninja
+ninja install
+cd /root
+
+stack --no-terminal --resolver nightly-2017-11-16 install --haddock \
+    accelerate-llvm-native \
     Agda \
     alarmclock \
     alex \
@@ -42,6 +53,7 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     cabal-install \
     cabal-toolkit \
     cassava \
+    cast \
     Chart-diagrams \
     classy-prelude-yesod \
     compact \
@@ -208,6 +220,9 @@ stack --no-terminal --resolver nightly-2017-11-15 install --haddock \
     xmonad \
     xmonad-extras \
     zeromq4-haskell \
-    zippers
+    zippers \
+    zm
 
-rm /tmp/bootstrap.sh
+rm -rf \
+    /tmp/bootstrap.sh \
+    /tmp/llvm
