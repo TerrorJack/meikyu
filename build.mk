@@ -1,4 +1,4 @@
-SRC_HC_OPTS        = -O -H64m
+SRC_HC_OPTS        = -O -H128m
 GhcStage1HcOpts    = -O
 GhcStage2HcOpts    = -O2
 GhcLibHcOpts       = -O2
@@ -7,4 +7,4 @@ SplitSections      = YES
 BUILD_SPHINX_HTML  = YES
 BUILD_SPHINX_PDF   = NO
 HADDOCK_DOCS       = YES
-EXTRA_HADDOCK_OPTS += --hyperlinked-source
+EXTRA_HADDOCK_OPTS += --quickjump --hyperlinked-source
