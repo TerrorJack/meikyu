@@ -4,7 +4,6 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     alsa-lib-dev \
     bzip2-dev \
-    cmake \
     curl-dev \
     freeglut-dev \
     icu-dev \
@@ -16,26 +15,14 @@ apk add --no-cache --no-progress \
     lmdb-dev \
     mariadb-dev \
     nettle-dev \
-    ninja \
     pcre-dev \
     postgresql-dev \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
-    subversion \
     zeromq-dev
 
-cd /tmp
-svn co https://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm
-cd llvm
-mkdir build
-cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_EH:BOOL=ON -DLLVM_ENABLE_RTTI:BOOL=ON -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON ..
-ninja
-ninja install
-cd /root
-
-stack --no-terminal --resolver nightly-2017-11-16 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-17 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -135,6 +122,7 @@ stack --no-terminal --resolver nightly-2017-11-16 install --haddock \
     megaparsec \
     messagepack-rpc \
     milena \
+    mmark-ext \
     morte \
     netwire-input \
     network-anonymous-i2p \
@@ -223,6 +211,4 @@ stack --no-terminal --resolver nightly-2017-11-16 install --haddock \
     zippers \
     zm
 
-rm -rf \
-    /tmp/bootstrap.sh \
-    /tmp/llvm
+rm /tmp/bootstrap.sh
