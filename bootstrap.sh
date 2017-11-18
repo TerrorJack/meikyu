@@ -5,11 +5,13 @@ apk add --no-cache --no-progress \
     alsa-lib-dev \
     bzip2-dev \
     curl-dev \
+    file-dev \
     freeglut-dev \
     icu-dev \
     libgit2-dev \
     libsndfile-dev \
     libxft-dev \
+    libxml2-dev \
     libxrandr-dev \
     libzip-dev \
     lmdb-dev \
@@ -22,7 +24,7 @@ apk add --no-cache --no-progress \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-17 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-18 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -75,6 +77,7 @@ stack --no-terminal --resolver nightly-2017-11-17 install --haddock \
     ghc-events \
     ghcid \
     git \
+    git-annex \
     github \
     github-webhook-handler-snap \
     github-release \
@@ -185,6 +188,7 @@ stack --no-terminal --resolver nightly-2017-11-17 install --haddock \
     threepenny-editors \
     threepenny-gui-flexbox \
     transient-universe \
+    tree-diff \
     twitter-conduit \
     type-combinators-singletons \
     unagi-chan \
