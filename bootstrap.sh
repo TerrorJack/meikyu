@@ -4,7 +4,6 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
-    bash \
     binutils-gold \
     bzip2 \
     ca-certificates \
@@ -36,7 +35,6 @@ apk add --no-cache --no-progress \
     xz \
     zlib-dev
 
-update-alternatives --install /bin/sh sh /bin/bash 40
 update-alternatives --install /usr/bin/sphinx-build sphinx-build /usr/bin/sphinx-build-3 30
 
 mkdir -p /root/.local/bin
@@ -49,14 +47,14 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout c7297342a4797ea36df8767d9c208cfb45de2d09
+git checkout 74070bbba956392ac6efd4e159dfb8f76b563615
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171116 --disable-ld-override
+./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171118 --disable-ld-override
 make -j4
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171116.installed
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171118.installed
 apk del ghc
 
 cd /tmp
