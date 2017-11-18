@@ -6,9 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          no_output_timeout: 1h
-          command: |
-            docker login -u terrorjack -p $DOCKER_PASS
-            docker build -t terrorjack/meikyu:ghc-8.3.20171118 .
-            docker push terrorjack/meikyu:ghc-8.3.20171118
+      - run: |
+          docker login -u terrorjack -p $DOCKER_PASS
+          docker build -t terrorjack/meikyu:ghc-8.3.20171118 .
+          docker push terrorjack/meikyu:ghc-8.3.20171118
