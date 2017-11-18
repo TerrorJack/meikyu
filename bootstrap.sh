@@ -4,9 +4,11 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
+    bash \
     binutils-gold \
     bzip2 \
     ca-certificates \
+    cmake \
     coreutils \
     dpkg \
     file \
@@ -19,22 +21,23 @@ apk add --no-cache --no-progress \
     gzip \
     libedit-dev \
     libffi-dev \
+    libtool \
     make \
     musl-dev \
+    ninja \
     numactl-dev \
     openssh \
     patch \
     perl \
     py3-sphinx \
     sed \
+    subversion \
     tar \
     xz \
     zlib-dev
 
-update-alternatives --install /usr/bin/sphinx-apidoc sphinx-apidoc /usr/bin/sphinx-apidoc-3 30
-update-alternatives --install /usr/bin/sphinx-autogen sphinx-autogen /usr/bin/sphinx-autogen-3 30
+update-alternatives --install /bin/sh sh /bin/bash 40
 update-alternatives --install /usr/bin/sphinx-build sphinx-build /usr/bin/sphinx-build-3 30
-update-alternatives --install /usr/bin/sphinx-quickstart sphinx-quickstart /usr/bin/sphinx-quickstart-3 30
 
 mkdir -p /root/.local/bin
 tar xz --wildcards --strip-components=1 -C /root/.local/bin '*/stack' -f /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz
@@ -54,13 +57,22 @@ mv /tmp/build.mk mk/
 make -j4
 make install
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171118.installed
+apk del ghc
+
+cd /tmp
+svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
+cd llvm
+mkdir build
+cd build
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON ..
+ninja install
 cd /root
 
-apk del ghc
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
+    /tmp/llvm \
     /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
