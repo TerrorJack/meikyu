@@ -1,4 +1,4 @@
-SRC_HC_OPTS        = -O -H128m
+SRC_HC_OPTS        = -O -H256m
 GhcStage1HcOpts    = -O
 GhcStage2HcOpts    = -O2
 GhcLibHcOpts       = -O2
