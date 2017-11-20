@@ -24,7 +24,7 @@ apk add --no-cache --no-progress \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -40,10 +40,12 @@ stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
     brittany \
     c2hs \
     cabal-install \
+    cabal-rpm \
     cabal-toolkit \
     cassava \
     cast \
     Chart-diagrams \
+    chart-unit \
     classy-prelude-yesod \
     compact \
     cpphs \
@@ -64,6 +66,7 @@ stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
     effect-handlers \
     ekg \
     emailaddress \
+    errors-ext \
     ersatz \
     esqueleto \
     ether \
@@ -87,6 +90,7 @@ stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
     groundhog-inspector \
     groundhog-mysql \
     groundhog-postgresql \
+    gtk2hs-buildtools \
     happy \
     hasmin \
     hasql-migration \
@@ -104,6 +108,7 @@ stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
     hpp \
     hprotoc \
     hscolour \
+    hsexif \
     hsndfile-vector \
     hspec-checkers \
     hspec-discover \
@@ -138,8 +143,10 @@ stack --no-terminal --resolver nightly-2017-11-19 install --haddock \
     operational \
     pandoc \
     pandoc-citeproc \
+    pango \
     pcre-heavy \
     pdf-toolbox-document \
+    perf \
     persistent-mongoDB \
     persistent-mysql \
     persistent-mysql-haskell \
