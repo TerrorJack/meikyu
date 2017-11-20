@@ -4,13 +4,11 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
-    bash \
     binutils-gold \
     bzip2 \
     ca-certificates \
     cmake \
     coreutils \
-    dpkg \
     file \
     findutils \
     g++ \
@@ -64,7 +62,6 @@ ninja install
 cd /root
 
 apk del ghc
-update-alternatives --install /bin/sh sh /bin/bash 44
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
