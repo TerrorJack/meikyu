@@ -20,6 +20,7 @@ apk add --no-cache --no-progress \
     gzip \
     libedit-dev \
     libffi-dev \
+    libtool \
     make \
     musl-dev \
     ninja \
@@ -44,14 +45,14 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout b8e324a4ff7d04d55dc8d8d8b9e441225c9dd4f6
+git checkout 7d16d8a20d5ba6ca38c0fdf5732e3edaa6b14827
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171118 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171119 --disable-ld-override
 make -j4
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171118.installed
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171119.installed
 
 cd /tmp
 svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
