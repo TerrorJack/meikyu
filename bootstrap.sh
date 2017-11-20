@@ -17,7 +17,6 @@ apk add --no-cache --no-progress \
     lmdb-dev \
     mariadb-dev \
     nettle-dev \
-    pango-dev \
     pcre-dev \
     postgresql-dev \
     sdl2_image-dev \
@@ -91,7 +90,6 @@ stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
     groundhog-inspector \
     groundhog-mysql \
     groundhog-postgresql \
-    gtk2hs-buildtools \
     happy \
     hasmin \
     hasql-migration \
@@ -144,7 +142,6 @@ stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
     operational \
     pandoc \
     pandoc-citeproc \
-    pango \
     pcre-heavy \
     pdf-toolbox-document \
     perf \
