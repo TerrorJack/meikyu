@@ -24,7 +24,7 @@ apk add --no-cache --no-progress \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-21 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -90,6 +90,7 @@ stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
     groundhog-inspector \
     groundhog-mysql \
     groundhog-postgresql \
+    hapistrano \
     happy \
     hasmin \
     hasql-migration \
@@ -214,6 +215,7 @@ stack --no-terminal --resolver nightly-2017-11-20 install --haddock \
     wreq \
     yaml \
     Yampa \
+    xeno \
     xmonad \
     xmonad-extras \
     zeromq4-haskell \
