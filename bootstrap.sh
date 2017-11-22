@@ -43,7 +43,7 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout eb5a40cea6c64f5300c7697231cb0ede2c554388
+git checkout abdb5559b74af003a6d85f32695c034ff739f508
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
@@ -51,6 +51,7 @@ SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x
 make -j4
 make install
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171122.installed
+apk del ghc
 
 cd /tmp
 svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
@@ -61,7 +62,6 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_L
 ninja install
 cd /root
 
-apk del ghc
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
