@@ -19,7 +19,7 @@ svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
 cd llvm
 mkdir build
 cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON ..
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 -DBUILD_SHARED_LIBS:BOOL=ON ..
 ninja install
 
 cd /root
