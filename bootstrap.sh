@@ -23,7 +23,7 @@ apk add --no-cache --no-progress \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-24 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
