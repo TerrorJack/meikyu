@@ -11,6 +11,7 @@ apk add --no-cache --no-progress \
     icu-dev \
     libgit2-dev \
     libsndfile-dev \
+    libxcursor-dev \
     libxft-dev \
     libxml2-dev \
     libxrandr-dev \
