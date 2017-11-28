@@ -8,5 +8,5 @@ jobs:
       - setup_remote_docker
       - run: |
           docker login -u terrorjack -p $DOCKER_PASS
-          docker build -t terrorjack/meikyu:ghc-8.3.20171127 .
-          docker push terrorjack/meikyu:ghc-8.3.20171127
+          docker build -t terrorjack/meikyu:ghc-8.3.20171128 .
+          docker push terrorjack/meikyu:ghc-8.3.20171128
