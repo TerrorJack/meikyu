@@ -24,6 +24,7 @@ apk add --no-cache --no-progress \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
+    xz-dev \
     zeromq-dev
 
 stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
