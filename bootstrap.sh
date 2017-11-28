@@ -7,10 +7,12 @@ apk add --no-cache --no-progress \
     curl-dev \
     file-dev \
     freeglut-dev \
+    glfw-dev \
     icu-dev \
     libgit2-dev \
     libsndfile-dev \
     libxft-dev \
+    libxml2-dev \
     libxrandr-dev \
     libzip-dev \
     lmdb-dev \
@@ -23,7 +25,7 @@ apk add --no-cache --no-progress \
     sdl2_ttf-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
+stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -34,6 +36,7 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     atom-conduit \
     backprop \
     bench \
+    bindings-GLFW \
     bitcoin-api-extra \
     bound \
     brittany \
@@ -47,6 +50,7 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     chart-unit \
     classy-prelude-yesod \
     compact \
+    compensated \
     cpphs \
     curl \
     dhall \
@@ -54,6 +58,9 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     dhall-json \
     dhall-nix \
     dhall-text \
+    diagrams \
+    diagrams-canvas \
+    dice \
     dimensional \
     direct-rocksdb \
     distributed-closure \
@@ -72,6 +79,7 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     eventstore \
     extensible-effects \
     extrapolate \
+    fast-builder \
     feed \
     fixed-vector-hetero \
     free-vl \
@@ -79,6 +87,7 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     ghc-events \
     ghcid \
     git \
+    git-annex \
     github \
     github-webhook-handler-snap \
     github-release \
@@ -89,13 +98,20 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     groundhog-mysql \
     groundhog-postgresql \
     hapistrano \
+    happstack-hsp \
     happy \
+    harp \
+    haskell-tools-cli \
+    haskell-tools-debug \
+    haskell-tools-demo \
     hasmin \
     hasql-migration \
     haxl \
+    HDBC-mysql \
     hedgehog-quickcheck \
     hindent \
     hint \
+    hip \
     hit \
     hjsmin \
     hjsonschema \
@@ -111,25 +127,36 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     hspec-checkers \
     hspec-discover \
     hworker \
+    hyperloglog \
     influxdb \
     inline-c-cpp \
     integration \
     intero \
     irc-client \
+    ixset \
     json-autotype \
+    json-stream \
     katip-elasticsearch \
     katydid \
     language-java \
+    large-hashable \
     LibZip \
     lmdb \
+    log-domain \
+    log-elasticsearch \
+    log-warper \
     machines-binary \
     machines-directory \
     machines-io \
     megaparsec \
     messagepack-rpc \
+    midi-music-box \
     milena \
+    minio-hs \
+    misfortune \
     mmark-ext \
     morte \
+    mysql-haskell-nem \
     netwire-input \
     network-anonymous-i2p \
     network-anonymous-tor \
@@ -137,6 +164,8 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     network-transport-composed \
     network-transport-inmemory \
     network-transport-tests \
+    NoTrace \
+    opaleye-trans \
     open-browser \
     operational \
     pandoc \
@@ -151,6 +180,8 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     persistent-refs \
     persistent-sqlite \
     persistent-template \
+    postgresql-query \
+    postgresql-typed \
     pretty-show \
     protobuf-simple \
     protocol-buffers-descriptor \
@@ -161,13 +192,16 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     quickbench \
     raaz \
     rainbox \
+    random-fu \
     reactive-banana \
     relational-record \
     repa-algorithms \
     repa-io \
+    repline \
     SafeSemaphore \
     sbv \
     scalpel \
+    schematic \
     sdl2-image \
     sdl2-mixer \
     sdl2-ttf \
@@ -182,8 +216,10 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     soap-openssl \
     squeal-postgresql \
     stm-containers \
+    stm-supply \
     stylish-haskell \
     swish \
+    syb-with-class \
     tardis \
     tasty-quickcheck \
     tasty-smallcheck \
@@ -191,22 +227,30 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     text-icu \
     threepenny-editors \
     threepenny-gui-flexbox \
+    tibetan-utils \
     transient-universe \
     tree-diff \
+    true-name \
     twitter-conduit \
     type-combinators-singletons \
     unagi-chan \
     unbound-generics \
     unboxed-ref \
     unification-fd \
-    union users-persistent \
+    union \
+    Unique \
+    userid \
+    users-persistent \
     users-postgresql-simple \
     users-test \
     utf8-light \
     vcswrapper \
     viewprof \
     wai-app-static \
+    wai-middleware-rollbar \
+    wai-session-postgresql \
     wai-websockets \
+    wavefront \
     webdriver \
     websockets-rpc \
     weigh \
@@ -217,7 +261,9 @@ stack --no-terminal --resolver nightly-2017-11-25 install --haddock \
     xmonad \
     xmonad-extras \
     zeromq4-haskell \
+    zim-parser \
     zippers \
-    zm
+    zm \
+    ztail
 
 rm /tmp/bootstrap.sh
