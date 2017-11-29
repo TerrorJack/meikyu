@@ -4,6 +4,7 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
+    bind-tools \
     binutils-gold \
     bzip2 \
     ca-certificates \
@@ -30,11 +31,15 @@ apk add --no-cache --no-progress \
     sed \
     subversion \
     tar \
+    wget \
     xz \
     zlib-dev
 
 mkdir -p /root/.local/bin
-tar xz --wildcards --strip-components=1 -C /root/.local/bin '*/stack' -f /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz
+cd /root/.local/bin
+mv /tmp/cabal .
+chmod u+x cabal
+tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.0.20171022-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
@@ -43,7 +48,7 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout 54fda257d4a7bfddaa0c1fa0be698d1a849c4124
+git checkout 030d9d476e5f00b62b20b5d3b58b0083ec247826
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
