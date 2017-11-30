@@ -56,7 +56,7 @@ SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x
 make -j4
 make install
 printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171129.installed
-apk del ghc subversion
+apk del ghc
 
 cd /tmp
 svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
@@ -65,6 +65,7 @@ mkdir build
 cd build
 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 ..
 ninja install
+apk del subversion
 cd /root
 
 mv /root/.stack/programs /tmp/programs
