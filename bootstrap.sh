@@ -48,15 +48,15 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout 030d9d476e5f00b62b20b5d3b58b0083ec247826
+git checkout d672b7ffa0cf23fae6bf95731b841105ab4e9c8e
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171128 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171129 --disable-ld-override
 make -j4
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171128.installed
-apk del ghc
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171129.installed
+apk del ghc subversion
 
 cd /tmp
 svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
@@ -76,7 +76,8 @@ rm -rf \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
     /root/.local/bin/happy \
-    /root/.stack
+    /root/.stack \
+    /root/.subversion
 mkdir /root/.stack
 mv /tmp/config.yaml /root/.stack/
 mv /tmp/programs /root/.stack/programs

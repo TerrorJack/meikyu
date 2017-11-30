@@ -6,6 +6,6 @@
 A build environment for my personal Haskell projects.
 
 * Uses Alpine Linux edge version.
-* Based on [`stack`](https://docs.haskellstack.org/en/stable/README/)
+* Has [`stack`] and [`cabal`] pre-installed.
 
-For an Ubuntu-based environment, checkout [rakuen](https://github.com/TerrorJack/rakuen).
+For an Ubuntu-based environment, checkout [rakuen](https://github.com/TerrorJack/rakuen) (deprecated).
