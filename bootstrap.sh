@@ -48,7 +48,7 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout e1fb28384c44fcd29b0e60b9fd44767be22646af
+git checkout bc761ad9c65c7aa62d38db39c59a6c0ae59c8ab8
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
