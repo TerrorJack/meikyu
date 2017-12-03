@@ -24,8 +24,10 @@ ninja install
 
 cd /root
 
+apk del subversion
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/llvm \
     /tmp/z3-4.5.0.tar.gz \
-    /tmp/z3-z3-4.5.0
+    /tmp/z3-z3-4.5.0 \
+    /root/.subversion
