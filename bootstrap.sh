@@ -1076,7 +1076,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hsass \
     hsb2hs \
     hscolour \
-    hsdns \
     hsebaysdk \
     hsemail \
     HSet \
