@@ -1,5 +1,5 @@
-allow-different-user: true
-allow-newer: true
 build:
   prefetch: true
 ghc-build: standard
+ghc-options:
+  "$everything": -split-sections
