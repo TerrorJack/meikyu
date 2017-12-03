@@ -1600,7 +1600,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     nvim-hs \
     nvim-hs-contrib \
     nvim-hs-ghcid \
-    nvvm \
     objective \
     ObjectName \
     oeis \
