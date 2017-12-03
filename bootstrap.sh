@@ -7,9 +7,12 @@ apk add --no-cache --no-progress \
     curl-dev \
     file-dev \
     freeglut-dev \
+    gd-dev \
     glfw-dev \
     icu-dev \
+    leveldb-dev \
     libgit2-dev \
+    libjpeg-turbo-dev \
     libsndfile-dev \
     libxcursor-dev \
     libxft-dev \
@@ -67,7 +70,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     alsa-seq \
     alternative-vector \
     alternators \
-    ALUT \
     amazonka \
     amazonka-apigateway \
     amazonka-application-autoscaling \
@@ -189,7 +191,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     async-refresh-tokens \
     async-timer \
     atom-basic \
-    atom-conduit \
     atomic-primops \
     atomic-write \
     attoparsec \
@@ -374,7 +375,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     clang-compilation-database \
     classy-prelude \
     classy-prelude-conduit \
-    classy-prelude-yesod \
     clay \
     cli \
     clientsession \
@@ -511,7 +511,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     data-has \
     data-hash \
     data-inttrie \
-    data-lens-light \
     data-memocombinators \
     data-msgpack \
     data-or \
@@ -633,9 +632,7 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     eliminators \
     elm-core-sources \
     elm-export \
-    elm-export-persistent \
     email-validate \
-    emailaddress \
     enclosed-exceptions \
     EntrezHTTP \
     entropy \
@@ -653,7 +650,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     errors \
     errors-ext \
     ersatz \
-    esqueleto \
     etcd \
     ether \
     event \
@@ -661,9 +657,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     eventful-core \
     eventful-dynamodb \
     eventful-memory \
-    eventful-postgresql \
-    eventful-sql-common \
-    eventful-sqlite \
     eventful-test-helpers \
     eventsource-api \
     eventsource-geteventstore-store \
@@ -807,7 +800,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     ginger \
     giphy-api \
     git \
-    git-annex \
     github \
     github-release \
     github-types \
@@ -967,10 +959,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     HandsomeSoup \
     handwriting \
     hapistrano \
-    happstack-hsp \
-    happstack-jmacro \
-    happstack-server \
-    happstack-server-tls \
     happy \
     harp \
     hasbolt \
@@ -986,7 +974,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     haskell-import-graph \
     haskell-lexer \
     haskell-lsp \
-    haskell-names \
     haskell-neo4j-client \
     haskell-spacegoo \
     haskell-src \
@@ -1024,9 +1011,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     Hclip \
     HCodecs \
     hdaemonize \
-    HDBC \
-    HDBC-mysql \
-    HDBC-session \
     heap \
     heaps \
     heatshrink \
@@ -1062,13 +1046,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hjsmin \
     hjsonpointer \
     hjsonschema \
-    hledger \
-    hledger-api \
-    hledger-iadd \
-    hledger-interest \
-    hledger-lib \
-    hledger-ui \
-    hledger-web \
     hlibgit2 \
     hlibsass \
     hlint \
@@ -1119,7 +1096,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hsndfile-vector \
     HsOpenSSL \
     HsOpenSSL-x509-system \
-    hsp \
     hspec \
     hspec-attoparsec \
     hspec-checkers \
@@ -1141,7 +1117,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hstatsd \
     HStringTemplate \
     HSvm \
-    hsx-jmacro \
     hsx2hs \
     hsyslog \
     htaglib \
@@ -1272,7 +1247,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     javascript-extras \
     jmacro \
     jmacro-rpc \
-    jmacro-rpc-happstack \
     jmacro-rpc-snap \
     jni \
     jose \
@@ -1333,12 +1307,8 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     lens-action \
     lens-aeson \
     lens-datetime \
-    lens-family \
-    lens-family-core \
-    lens-family-th \
     lens-labels \
     lens-regex \
-    lens-simple \
     leveldb-haskell \
     lexer-applicative \
     libffi \
@@ -1607,8 +1577,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     online \
     Only \
     oo-prototypes \
-    opaleye \
-    opaleye-trans \
     open-browser \
     open-witness \
     OpenAL \
@@ -1620,7 +1588,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     openssl-streams \
     operational \
     operational-class \
-    opml-conduit \
     optional-args \
     options \
     optparse-applicative \
@@ -1671,15 +1638,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     pem \
     perf \
     persistable-record \
-    persistable-types-HDBC-pg \
-    persistent \
-    persistent-mongoDB \
-    persistent-mysql \
-    persistent-mysql-haskell \
-    persistent-postgresql \
-    persistent-refs \
-    persistent-sqlite \
-    persistent-template \
     pg-transact \
     pgp-wordlist \
     phantom-state \
@@ -1730,7 +1688,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     postgresql-simple-queue \
     postgresql-simple-url \
     postgresql-transactional \
-    postgresql-typed \
     pqueue \
     pred-set \
     pred-trie \
@@ -1769,13 +1726,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     prometheus-metrics-ghc \
     promises \
     prompt \
-    proto-lens \
-    proto-lens-arbitrary \
-    proto-lens-combinators \
-    proto-lens-descriptors \
-    proto-lens-optparse \
-    proto-lens-protobuf-types \
-    proto-lens-protoc \
     protobuf \
     protobuf-simple \
     protocol-buffers \
@@ -1809,8 +1759,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     quickcheck-text \
     quickcheck-unicode \
     raaz \
-    rainbow \
-    rainbox \
     rakuten \
     ramus \
     random \
@@ -1851,8 +1799,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     reform \
     reform-blaze \
     reform-hamlet \
-    reform-happstack \
-    reform-hsp \
     RefSerialize \
     regex-applicative \
     regex-applicative-text \
@@ -1866,10 +1812,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     regex-tdfa \
     regex-tdfa-text \
     reinterpret-cast \
-    relational-query \
-    relational-query-HDBC \
-    relational-record \
-    relational-schemas \
     rematch \
     renderable \
     repa \
@@ -1884,7 +1826,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     rest-client \
     rest-core \
     rest-gen \
-    rest-happstack \
     rest-snap \
     rest-stringmap \
     rest-types \
@@ -1973,10 +1914,8 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     servant-websockets \
     servant-yaml \
     serversession \
-    serversession-backend-persistent \
     serversession-backend-redis \
     serversession-frontend-wai \
-    serversession-frontend-yesod \
     servius \
     ses-html \
     set-cover \
@@ -2013,7 +1952,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     skylighting \
     slack-web \
     slave-thread \
-    slug \
     smallcheck \
     smoothie \
     smtp-mail \
@@ -2044,12 +1982,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     splice \
     split \
     splitmix \
-    Spock \
-    Spock-api \
-    Spock-api-server \
-    Spock-core \
-    Spock-lucid \
-    Spock-worker \
     spreadsheet \
     sql-words \
     sqlite-simple \
@@ -2229,7 +2161,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     tidal \
     tile \
     time-compat \
-    time-lens \
     time-locale-compat \
     time-parsers \
     timeit \
@@ -2336,7 +2267,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     urlpath \
     userid \
     users \
-    users-persistent \
     users-postgresql-simple \
     users-test \
     utf8-light \
@@ -2408,8 +2338,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     web-plugins \
     web-routes \
     web-routes-boomerang \
-    web-routes-happstack \
-    web-routes-hsp \
     web-routes-th \
     web-routes-wai \
     webdriver \
@@ -2495,46 +2423,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     Yampa \
     YampaSynth \
     yes-precure5-command \
-    yeshql \
-    yesod \
-    yesod-alerts \
-    yesod-auth \
-    yesod-auth-basic \
-    yesod-auth-fb \
-    yesod-auth-hashdb \
-    yesod-bin \
-    yesod-core \
-    yesod-csp \
-    yesod-default \
-    yesod-eventsource \
-    yesod-fb \
-    yesod-form \
-    yesod-form-bootstrap4 \
-    yesod-form-richtext \
-    yesod-gitrepo \
-    yesod-gitrev \
-    yesod-newsfeed \
-    yesod-persistent \
-    yesod-recaptcha2 \
-    yesod-sitemap \
-    yesod-static \
-    yesod-static-angular \
-    yesod-table \
-    yesod-test \
-    yesod-websockets \
-    yi-core \
-    yi-frontend-vty \
-    yi-fuzzy-open \
-    yi-ireader \
-    yi-keymap-cua \
-    yi-keymap-emacs \
-    yi-keymap-vim \
-    yi-language \
-    yi-misc-modes \
-    yi-mode-haskell \
-    yi-mode-javascript \
-    yi-rope \
-    yi-snippet \
     yjsvg \
     yjtools \
     yoga \
