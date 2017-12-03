@@ -22,6 +22,7 @@ apk add --no-cache --no-progress \
     libzip-dev \
     lmdb-dev \
     mariadb-dev \
+    mpfr-dev \
     nettle-dev \
     openal-soft-dev \
     pango-dev \
