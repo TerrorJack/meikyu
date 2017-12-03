@@ -1635,7 +1635,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     pgp-wordlist \
     phantom-state \
     picoparsec \
-    picosat \
     pid1 \
     pinboard \
     pinch \
