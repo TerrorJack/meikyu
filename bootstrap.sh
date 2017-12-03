@@ -19,6 +19,7 @@ apk add --no-cache --no-progress \
     lmdb-dev \
     mariadb-dev \
     nettle-dev \
+    openal-soft-dev \
     pango-dev \
     pcre-dev \
     postgresql-dev \
