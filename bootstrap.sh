@@ -32,14 +32,9 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     abstract-deque-tests \
     abstract-par \
     accelerate \
-    accelerate-bignum \
-    accelerate-blas \
-    accelerate-examples \
-    accelerate-fft \
     accelerate-io \
     accelerate-llvm \
     accelerate-llvm-native \
-    accelerate-llvm-ptx \
     accuerr \
     ace \
     action-permutations \
@@ -489,13 +484,10 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     ctrie \
     cubicbezier \
     cubicspline \
-    cublas \
     cue-sheet \
     cufft \
     curl \
     currencies \
-    cusolver \
-    cusparse \
     cutter \
     czipwith \
     data-accessor \
