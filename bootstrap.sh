@@ -17,7 +17,6 @@ apk add --no-cache --no-progress \
     libxrandr-dev \
     libzip-dev \
     lmdb-dev \
-    mariadb-dev \
     nettle-dev \
     pcre-dev \
     postgresql-dev \
@@ -27,7 +26,7 @@ apk add --no-cache --no-progress \
     xz-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
+stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     accelerate-llvm-native \
     Agda \
     alarmclock \
@@ -96,26 +95,17 @@ stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     gloss \
     gnuplot \
     GPipe \
-    groundhog-inspector \
-    groundhog-mysql \
-    groundhog-postgresql \
     hapistrano \
-    happstack-hsp \
     happy \
-    harp \
     haskell-tools-cli \
     haskell-tools-debug \
     haskell-tools-demo \
-    hasmin \
-    hasql-migration \
     haxl \
-    HDBC-mysql \
     hedgehog-quickcheck \
     hindent \
     hint \
     hip \
     hit \
-    hjsmin \
     hjsonschema \
     hlint \
     hoogle \
@@ -158,7 +148,6 @@ stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     misfortune \
     mmark-ext \
     morte \
-    mysql-haskell-nem \
     netwire-input \
     network-anonymous-i2p \
     network-anonymous-tor \
@@ -175,15 +164,6 @@ stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     pcre-heavy \
     pdf-toolbox-document \
     perf \
-    persistent-mongoDB \
-    persistent-mysql \
-    persistent-mysql-haskell \
-    persistent-postgresql \
-    persistent-refs \
-    persistent-sqlite \
-    persistent-template \
-    postgresql-query \
-    postgresql-typed \
     pretty-show \
     protobuf-simple \
     protocol-buffers-descriptor \
@@ -196,7 +176,6 @@ stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     rainbox \
     random-fu \
     reactive-banana \
-    relational-record \
     repa-algorithms \
     repa-io \
     repline \
@@ -229,7 +208,6 @@ stack --no-terminal --resolver nightly-2017-11-27 install --haddock \
     text-icu \
     threepenny-editors \
     threepenny-gui-flexbox \
-    tibetan-utils \
     transient-universe \
     tree-diff \
     true-name \
