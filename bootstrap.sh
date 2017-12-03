@@ -19,6 +19,7 @@ apk add --no-cache --no-progress \
     lmdb-dev \
     mariadb-dev \
     nettle-dev \
+    pango-dev \
     pcre-dev \
     postgresql-dev \
     sdl2_image-dev \
@@ -281,7 +282,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     blosum \
     bmp \
     bno055-haskell \
-    boltzmann-samplers \
     bookkeeping \
     Boolean \
     boolean-like \
@@ -483,9 +483,7 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     csv-conduit \
     ctrie \
     cubicbezier \
-    cubicspline \
     cue-sheet \
-    cufft \
     curl \
     currencies \
     cutter \
@@ -964,7 +962,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hailgun \
     hailgun-simple \
     half \
-    hamilton \
     hamlet \
     HandsomeSoup \
     handwriting \
@@ -1098,7 +1095,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hpp \
     hpqtypes \
     hprotoc \
-    hquantlib \
     hreader \
     hreader-lens \
     hruby \
@@ -1113,7 +1109,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     HSet \
     hset \
     hsexif \
-    hsignal \
     hsinstall \
     hslogger \
     hslua \
@@ -1142,7 +1137,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     hspec-wai-json \
     hspec-webdriver \
     hsshellscript \
-    hstatistics \
     hstatsd \
     HStringTemplate \
     HSvm \
@@ -1211,6 +1205,7 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     iconv \
     identicon \
     ieee754 \
+    if \
     IfElse \
     iff \
     ignore \
@@ -1464,7 +1459,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     missing-foreign \
     MissingH \
     mixed-types-num \
-    mltool \
     mmap \
     mmark \
     mmark-ext \
@@ -1688,7 +1682,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     pg-transact \
     pgp-wordlist \
     phantom-state \
-    picedit \
     picoparsec \
     picosat \
     pid1 \
@@ -1716,7 +1709,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     pkcs10 \
     placeholders \
     plan-b \
-    plot \
     pointed \
     pointedlist \
     pointful \
@@ -1799,7 +1791,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     purescript-bridge \
     pusher-http-haskell \
     pwstore-fast \
-    qchas \
     qm-interpolated-string \
     QuasiText \
     questioner \
