@@ -123,7 +123,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     influxdb \
     inline-c-cpp \
     integration \
-    intero \
     irc-client \
     ixset \
     json-autotype \
