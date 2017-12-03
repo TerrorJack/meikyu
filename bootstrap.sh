@@ -9,6 +9,7 @@ apk add --no-cache --no-progress \
     file-dev \
     freeglut-dev \
     gd-dev \
+    geoip-dev \
     glfw-dev \
     icu-dev \
     leveldb-dev \
