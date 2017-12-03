@@ -622,12 +622,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     effect-handlers \
     either \
     either-unwrap \
-    ekg \
-    ekg-cloudwatch \
-    ekg-core \
-    ekg-json \
-    ekg-statsd \
-    ekg-wai \
     elerea \
     eliminators \
     elm-core-sources \
@@ -804,7 +798,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     github-release \
     github-types \
     github-webhook-handler \
-    github-webhook-handler-snap \
     gitlib \
     gitlib-libgit2 \
     gitlib-test \
@@ -816,7 +809,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     glazier-pipes \
     glib \
     Glob \
-    glob-posix \
     gloss \
     gloss-accelerate \
     gloss-algorithms \
@@ -1247,7 +1239,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     javascript-extras \
     jmacro \
     jmacro-rpc \
-    jmacro-rpc-snap \
     jni \
     jose \
     jose-jwt \
@@ -1440,7 +1431,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     modern-uri \
     modify-fasta \
     moesocks \
-    mole \
     monad-control \
     monad-control-aligned \
     monad-coroutine \
@@ -1826,7 +1816,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     rest-client \
     rest-core \
     rest-gen \
-    rest-snap \
     rest-stringmap \
     rest-types \
     rest-wai \
@@ -1955,9 +1944,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     smallcheck \
     smoothie \
     smtp-mail \
-    snap-blaze \
-    snap-core \
-    snap-server \
     snowflake \
     snowtify \
     soap \
@@ -2149,9 +2135,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     thread-local-storage \
     threads \
     threads-extras \
-    threepenny-editors \
-    threepenny-gui \
-    threepenny-gui-flexbox \
     throttle-io-stream \
     through-text \
     throwable-exceptions \
@@ -2347,7 +2330,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     websockets \
     websockets-rpc \
     websockets-simple \
-    websockets-snap \
     weeder \
     weigh \
     wide-word \
