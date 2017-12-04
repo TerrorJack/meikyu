@@ -30,6 +30,7 @@ apk add --no-cache --no-progress \
     pango-dev \
     pcre-dev \
     postgresql-dev \
+    readline-dev \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
