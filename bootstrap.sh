@@ -13,6 +13,7 @@ apk add --no-cache --no-progress \
     glfw-dev \
     icu-dev \
     imlib2-dev \
+    lapack-dev \
     leveldb-dev \
     libgit2-dev \
     libjpeg-turbo-dev \
