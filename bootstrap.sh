@@ -1727,7 +1727,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
     psql-helpers \
     PSQueue \
     psqueues \
-    pthread \
     publicsuffix \
     pure-io \
     pureMD5 \
