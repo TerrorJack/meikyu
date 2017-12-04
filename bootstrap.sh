@@ -5,6 +5,7 @@ apk add --no-cache --no-progress \
     alsa-lib-dev \
     bzip2-dev \
     curl-dev \
+    discount-dev \
     eudev-dev \
     file-dev \
     freeglut-dev \
