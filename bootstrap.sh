@@ -13,6 +13,7 @@ apk add --no-cache --no-progress \
     gd-dev \
     geoip-dev \
     glfw-dev \
+    hidapi-dev \
     icu-dev \
     imlib2-dev \
     lapack-dev \
@@ -42,7 +43,7 @@ apk add --no-cache --no-progress \
     xz-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-12-01 install --haddock \
+stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going \
     abstract-deque \
     abstract-deque-tests \
     abstract-par \
