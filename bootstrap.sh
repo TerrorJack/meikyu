@@ -7,6 +7,7 @@ apk add --no-cache --no-progress \
     curl-dev \
     discount-dev \
     eudev-dev \
+    fftw-dev \
     file-dev \
     freeglut-dev \
     gd-dev \
