@@ -38,6 +38,7 @@ apk add --no-cache --no-progress \
     sdl2_image-dev \
     sdl2_mixer-dev \
     sdl2_ttf-dev \
+    taglib-dev \
     xz-dev \
     zeromq-dev
 
