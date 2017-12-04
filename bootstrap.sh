@@ -8,6 +8,7 @@ apk add --no-cache --no-progress \
     binutils-gold \
     bzip2 \
     ca-certificates \
+    cmake \
     coreutils \
     file \
     findutils \
@@ -21,12 +22,14 @@ apk add --no-cache --no-progress \
     libffi-dev \
     make \
     musl-dev \
+    ninja \
     numactl-dev \
     openssh \
     patch \
     perl \
     py3-sphinx \
     sed \
+    subversion \
     tar \
     wget \
     xz \
@@ -45,15 +48,26 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout ghc-8.2.2-release
+git checkout 1acb922bb1186662919c1dbc0af596584e5db3ac
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.2.2 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171204 --disable-ld-override
 make -j4
 make install
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.2.2.installed
+sed -i -e "s,ghc-8.3.20171204,ghc-8.3," /root/.stack/programs/x86_64-linux/ghc-8.3.20171204/share/doc/ghc-8.3.20171204/html/index.html
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171204.installed
 apk del ghc
+
+cd /tmp
+svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
+cd llvm
+mkdir build
+cd build
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 ..
+ninja install
+apk del subversion
+cd /root
 
 mv /root/.stack/programs /tmp/programs
 rm -rf \
