@@ -32,7 +32,6 @@ apk add --no-cache --no-progress \
     mpfr-dev \
     nettle-dev \
     openal-soft-dev \
-    pango-dev \
     pcre-dev \
     postgresql-dev \
     readline-dev \
@@ -81,96 +80,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     alsa-seq \
     alternative-vector \
     alternators \
-    amazonka \
-    amazonka-apigateway \
-    amazonka-application-autoscaling \
-    amazonka-appstream \
-    amazonka-autoscaling \
-    amazonka-budgets \
-    amazonka-certificatemanager \
-    amazonka-cloudformation \
-    amazonka-cloudfront \
-    amazonka-cloudhsm \
-    amazonka-cloudsearch \
-    amazonka-cloudsearch-domains \
-    amazonka-cloudtrail \
-    amazonka-cloudwatch \
-    amazonka-cloudwatch-events \
-    amazonka-cloudwatch-logs \
-    amazonka-codebuild \
-    amazonka-codecommit \
-    amazonka-codedeploy \
-    amazonka-codepipeline \
-    amazonka-cognito-identity \
-    amazonka-cognito-idp \
-    amazonka-cognito-sync \
-    amazonka-config \
-    amazonka-core \
-    amazonka-datapipeline \
-    amazonka-devicefarm \
-    amazonka-directconnect \
-    amazonka-discovery \
-    amazonka-dms \
-    amazonka-ds \
-    amazonka-dynamodb \
-    amazonka-dynamodb-streams \
-    amazonka-ec2 \
-    amazonka-ecr \
-    amazonka-ecs \
-    amazonka-efs \
-    amazonka-elasticache \
-    amazonka-elasticbeanstalk \
-    amazonka-elasticsearch \
-    amazonka-elastictranscoder \
-    amazonka-elb \
-    amazonka-elbv2 \
-    amazonka-emr \
-    amazonka-gamelift \
-    amazonka-glacier \
-    amazonka-health \
-    amazonka-iam \
-    amazonka-importexport \
-    amazonka-inspector \
-    amazonka-iot \
-    amazonka-iot-dataplane \
-    amazonka-kinesis \
-    amazonka-kinesis-analytics \
-    amazonka-kinesis-firehose \
-    amazonka-kms \
-    amazonka-lambda \
-    amazonka-lightsail \
-    amazonka-marketplace-analytics \
-    amazonka-marketplace-metering \
-    amazonka-ml \
-    amazonka-opsworks \
-    amazonka-opsworks-cm \
-    amazonka-pinpoint \
-    amazonka-polly \
-    amazonka-rds \
-    amazonka-redshift \
-    amazonka-rekognition \
-    amazonka-route53 \
-    amazonka-route53-domains \
-    amazonka-s3 \
-    amazonka-s3-streaming \
-    amazonka-sdb \
-    amazonka-servicecatalog \
-    amazonka-ses \
-    amazonka-shield \
-    amazonka-sms \
-    amazonka-snowball \
-    amazonka-sns \
-    amazonka-sqs \
-    amazonka-ssm \
-    amazonka-stepfunctions \
-    amazonka-storagegateway \
-    amazonka-sts \
-    amazonka-support \
-    amazonka-swf \
-    amazonka-test \
-    amazonka-waf \
-    amazonka-workspaces \
-    amazonka-xray \
     amqp \
     annotated-wl-pprint \
     ansi-terminal \
@@ -339,7 +248,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     cabal-toolkit \
     cabal2nix \
     cache \
-    cairo \
     calendar-recycling \
     call-stack \
     carray \
@@ -660,7 +568,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     event \
     event-list \
     eventful-core \
-    eventful-dynamodb \
     eventful-memory \
     eventful-test-helpers \
     eventsource-api \
@@ -797,11 +704,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     ghcjs-dom-jsaddle \
     ghcjs-perch \
     ghost-buster \
-    gi-atk \
-    gi-cairo \
-    gi-glib \
-    gi-gobject \
-    gi-javascriptcore \
     ginger \
     giphy-api \
     git \
@@ -818,7 +720,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     glaze \
     glazier \
     glazier-pipes \
-    glib \
     Glob \
     gloss \
     gloss-accelerate \
@@ -830,103 +731,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     GLUT \
     gluturtle \
     gnuplot \
-    gogol \
-    gogol-adexchange-buyer \
-    gogol-adexchange-seller \
-    gogol-admin-datatransfer \
-    gogol-admin-directory \
-    gogol-admin-emailmigration \
-    gogol-admin-reports \
-    gogol-adsense \
-    gogol-adsense-host \
-    gogol-affiliates \
-    gogol-analytics \
-    gogol-android-enterprise \
-    gogol-android-publisher \
-    gogol-appengine \
-    gogol-apps-activity \
-    gogol-apps-calendar \
-    gogol-apps-licensing \
-    gogol-apps-reseller \
-    gogol-apps-tasks \
-    gogol-appstate \
-    gogol-autoscaler \
-    gogol-bigquery \
-    gogol-billing \
-    gogol-blogger \
-    gogol-books \
-    gogol-civicinfo \
-    gogol-classroom \
-    gogol-cloudmonitoring \
-    gogol-cloudtrace \
-    gogol-compute \
-    gogol-container \
-    gogol-core \
-    gogol-customsearch \
-    gogol-dataflow \
-    gogol-dataproc \
-    gogol-datastore \
-    gogol-debugger \
-    gogol-deploymentmanager \
-    gogol-dfareporting \
-    gogol-discovery \
-    gogol-dns \
-    gogol-doubleclick-bids \
-    gogol-doubleclick-search \
-    gogol-drive \
-    gogol-firebase-rules \
-    gogol-fitness \
-    gogol-fonts \
-    gogol-freebasesearch \
-    gogol-fusiontables \
-    gogol-games \
-    gogol-games-configuration \
-    gogol-games-management \
-    gogol-genomics \
-    gogol-gmail \
-    gogol-groups-migration \
-    gogol-groups-settings \
-    gogol-identity-toolkit \
-    gogol-kgsearch \
-    gogol-latencytest \
-    gogol-logging \
-    gogol-maps-coordinate \
-    gogol-maps-engine \
-    gogol-mirror \
-    gogol-monitoring \
-    gogol-oauth2 \
-    gogol-pagespeed \
-    gogol-partners \
-    gogol-people \
-    gogol-play-moviespartner \
-    gogol-plus \
-    gogol-plus-domains \
-    gogol-prediction \
-    gogol-proximitybeacon \
-    gogol-pubsub \
-    gogol-qpxexpress \
-    gogol-replicapool \
-    gogol-replicapool-updater \
-    gogol-resourcemanager \
-    gogol-resourceviews \
-    gogol-script \
-    gogol-sheets \
-    gogol-shopping-content \
-    gogol-siteverification \
-    gogol-spectrum \
-    gogol-sqladmin \
-    gogol-storage \
-    gogol-storage-transfer \
-    gogol-tagmanager \
-    gogol-taskqueue \
-    gogol-translate \
-    gogol-urlshortener \
-    gogol-useraccounts \
-    gogol-vision \
-    gogol-webmaster-tools \
-    gogol-youtube \
-    gogol-youtube-analytics \
-    gogol-youtube-reporting \
     google-cloud \
     google-oauth2-jwt \
     google-translate \
@@ -949,7 +753,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     grouped-list \
     groupoids \
     groups \
-    gtk2hs-buildtools \
     h2c \
     hackage-db \
     hackage-security \
@@ -971,9 +774,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     hashmap \
     hashtables \
     haskeline \
-    haskell-gi \
-    haskell-gi-base \
-    haskell-gi-overloading \
     haskell-import-graph \
     haskell-lexer \
     haskell-lsp \
@@ -1007,7 +807,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     hasty-hamiltonian \
     HaTeX \
     haxl \
-    haxl-amazonka \
     HaXml \
     haxr \
     hbeanstalk \
@@ -1603,7 +1402,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     pandoc \
     pandoc-citeproc \
     pandoc-types \
-    pango \
     papillon \
     parallel \
     parallel-io \
@@ -1984,7 +1782,6 @@ stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going
     srcloc \
     stache \
     stack-type \
-    stackage-curator \
     state-codes \
     stateref \
     statestack \
