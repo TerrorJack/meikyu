@@ -2,7 +2,9 @@
 
 apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
+    file-dev \
     icu-dev \
+    libxml2-dev \
     pcre-dev \
     postgresql-dev \
     zeromq-dev
