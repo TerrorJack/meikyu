@@ -270,7 +270,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     charset \
     charsetdetect-ae \
     Chart \
-    Chart-cairo \
     Chart-diagrams \
     chart-unit \
     chaselev-deque \
@@ -464,7 +463,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     dhall-text \
     diagrams \
     diagrams-builder \
-    diagrams-cairo \
     diagrams-canvas \
     diagrams-contrib \
     diagrams-core \
