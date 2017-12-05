@@ -8,5 +8,5 @@ jobs:
       - setup_remote_docker
       - run: |
           docker login -u terrorjack -p $DOCKER_PASS
-          docker build -t terrorjack/meikyu:nightly-2017-12-01 .
-          docker push terrorjack/meikyu:nightly-2017-12-01
+          docker build -t terrorjack/meikyu:nightly-2017-12-05 .
+          docker push terrorjack/meikyu:nightly-2017-12-05

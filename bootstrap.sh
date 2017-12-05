@@ -42,7 +42,7 @@ apk add --no-cache --no-progress \
     xz-dev \
     zeromq-dev
 
-stack --no-terminal --resolver nightly-2017-12-01 install --haddock --keep-going \
+stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going \
     abstract-deque \
     abstract-deque-tests \
     abstract-par \
