@@ -8,7 +8,6 @@ apk add --no-cache --no-progress \
     binutils-gold \
     bzip2 \
     ca-certificates \
-    cmake \
     coreutils \
     file \
     findutils \
@@ -22,14 +21,12 @@ apk add --no-cache --no-progress \
     libffi-dev \
     make \
     musl-dev \
-    ninja \
     numactl-dev \
     openssh \
     patch \
     perl \
     py3-sphinx \
     sed \
-    subversion \
     tar \
     wget \
     xz \
@@ -48,26 +45,16 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout d6fccfb2ba087abfdd4a68b13165e1312f9af022
+git checkout 1ecbe9ccb10f42dc5b133ffb2c7b1e9247b1ba52
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.5.20171204 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.5.20171205 --disable-ld-override
 make -j4
 make install
-sed -i -e "s,ghc-8.5.20171204,ghc-8.5," /root/.stack/programs/x86_64-linux/ghc-8.5.20171204/share/doc/ghc-8.5.20171204/html/index.html
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.5.20171204.installed
+sed -i -e "s,ghc-8.5.20171205,ghc-8.5," /root/.stack/programs/x86_64-linux/ghc-8.5.20171205/share/doc/ghc-8.5.20171205/html/index.html
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.5.20171205.installed
 apk del ghc
-
-cd /tmp
-svn co http://llvm.org/svn/llvm-project/llvm/branches/release_50 llvm --quiet
-cd llvm
-mkdir build
-cd build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_FFI:BOOL=ON -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_SPHINX:BOOL=ON -DSPHINX_EXECUTABLE=/usr/bin/sphinx-build-3 ..
-ninja install
-apk del subversion
-cd /root
 
 mv /root/.stack/programs /tmp/programs
 rm -rf \
@@ -78,8 +65,7 @@ rm -rf \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
     /root/.local/bin/happy \
-    /root/.stack \
-    /root/.subversion
+    /root/.stack
 mkdir /root/.stack
 mv /tmp/config.yaml /root/.stack/
 mv /tmp/programs /root/.stack/programs
