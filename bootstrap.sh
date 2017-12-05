@@ -48,15 +48,15 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout 1acb922bb1186662919c1dbc0af596584e5db3ac
+git checkout d6fccfb2ba087abfdd4a68b13165e1312f9af022
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.3.20171204 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.5.20171204 --disable-ld-override
 make -j4
 make install
-sed -i -e "s,ghc-8.3.20171204,ghc-8.3," /root/.stack/programs/x86_64-linux/ghc-8.3.20171204/share/doc/ghc-8.3.20171204/html/index.html
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.3.20171204.installed
+sed -i -e "s,ghc-8.5.20171204,ghc-8.5," /root/.stack/programs/x86_64-linux/ghc-8.5.20171204/share/doc/ghc-8.5.20171204/html/index.html
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.5.20171204.installed
 apk del ghc
 
 cd /tmp
