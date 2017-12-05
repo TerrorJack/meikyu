@@ -9,10 +9,8 @@ apk add --no-cache --no-progress \
     eudev-dev \
     fftw-dev \
     file-dev \
-    freeglut-dev \
     gd-dev \
     geoip-dev \
-    glfw-dev \
     hidapi-dev \
     icu-dev \
     imlib2-dev \
@@ -21,23 +19,15 @@ apk add --no-cache --no-progress \
     libgit2-dev \
     libjpeg-turbo-dev \
     libsndfile-dev \
-    libxcursor-dev \
-    libxft-dev \
     libxml2-dev \
-    libxrandr-dev \
     libzip-dev \
     lmdb-dev \
     mariadb-dev \
-    mono-dev \
     mpfr-dev \
     nettle-dev \
-    openal-soft-dev \
     pcre-dev \
     postgresql-dev \
     readline-dev \
-    sdl2_image-dev \
-    sdl2_mixer-dev \
-    sdl2_ttf-dev \
     taglib-dev \
     xz-dev \
     zeromq-dev
@@ -130,9 +120,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     avers-api \
     avers-server \
     avwx \
-    aws \
-    axiom \
-    b9 \
     backprop \
     bake \
     bank-holidays-england \
@@ -168,7 +155,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     binary-search \
     binary-tagged \
     bindings-DSL \
-    bindings-GLFW \
     bindings-libzip \
     bioace \
     bioalign \
@@ -245,7 +231,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     cabal-file-th \
     cabal-install \
     cabal-rpm \
-    cabal-toolkit \
     cabal2nix \
     cache \
     calendar-recycling \
@@ -299,9 +284,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     Clipboard \
     clock \
     clock-extras \
-    clr-host \
-    clr-inline \
-    clr-marshal \
     clumpiness \
     ClustalParser \
     cmark \
@@ -477,13 +459,11 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     digest \
     digits \
     dimensional \
-    direct-rocksdb \
     direct-sqlite \
     directory-tree \
     discount \
     discrimination \
     disk-free-space \
-    disposable \
     distance \
     distributed-closure \
     distributed-process \
@@ -696,11 +676,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     ghc-typelits-knownnat \
     ghc-typelits-natnormalise \
     ghcid \
-    ghcjs-base-stub \
-    ghcjs-codemirror \
-    ghcjs-dom \
-    ghcjs-dom-jsaddle \
-    ghcjs-perch \
     ghost-buster \
     ginger \
     giphy-api \
@@ -713,26 +688,15 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     gitlib-libgit2 \
     gitlib-test \
     gitrev \
-    gl \
     glabrous \
     glaze \
     glazier \
     glazier-pipes \
     Glob \
-    gloss \
-    gloss-accelerate \
-    gloss-algorithms \
-    gloss-raster \
-    gloss-raster-accelerate \
-    gloss-rendering \
-    GLURaw \
-    GLUT \
-    gluturtle \
     gnuplot \
     google-cloud \
     google-oauth2-jwt \
     google-translate \
-    GPipe \
     gpolyline \
     graph-core \
     graph-wrapper \
@@ -1043,7 +1007,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     ixset-typed \
     jack \
     jailbreak-cabal \
-    javascript-extras \
     jmacro \
     jmacro-rpc \
     jni \
@@ -1376,10 +1339,7 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     oo-prototypes \
     open-browser \
     open-witness \
-    OpenAL \
     openexr-write \
-    OpenGL \
-    OpenGLRaw \
     openpgp-asciiarmor \
     opensource \
     openssl-streams \
@@ -1570,7 +1530,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     rattletrap \
     raw-strings-qq \
     rawfilepath \
-    rawstring-qm \
     rdf \
     rdtsc \
     reactive-banana \
@@ -1660,11 +1619,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     scientific \
     scotty \
     scrypt \
-    sdl2 \
-    sdl2-gfx \
-    sdl2-image \
-    sdl2-mixer \
-    sdl2-ttf \
     search-algorithms \
     securemem \
     SegmentTree \
@@ -2197,9 +2151,6 @@ stack --no-terminal --resolver nightly-2017-12-05 install --haddock --keep-going
     xml-types \
     xmlgen \
     xmlhtml \
-    xmonad \
-    xmonad-contrib \
-    xmonad-extras \
     xss-sanitize \
     xturtle \
     xxhash \
