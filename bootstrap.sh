@@ -59,6 +59,8 @@ cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/htm
 cd /tmp/html
 touch .nojekyll
 git init
+git config user.email "astrohavoc@gmail.com"
+git config user.name "Shao Cheng"
 git checkout -b gh-pages
 git add --all
 git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
