@@ -36,7 +36,7 @@ mkdir -p /root/.local/bin
 cd /root/.local/bin
 mv /tmp/cabal .
 chmod u+x cabal
-tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.0.20171202-linux-x86_64-static.tar.gz
+tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.1-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
@@ -45,7 +45,7 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout 5f332e1dab000e1f79c127d441f618280d14d2bd
+git checkout e4a1f032da39d8ee58498962cdc9bf5fed7b376e
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
@@ -61,7 +61,7 @@ rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
     /tmp/llvm \
-    /tmp/stack-1.6.0.20171202-linux-x86_64-static.tar.gz \
+    /tmp/stack-1.6.1-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
     /root/.local/bin/happy \
