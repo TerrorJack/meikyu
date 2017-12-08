@@ -3,11 +3,15 @@ jobs:
   build:
     docker:
       - image: docker:stable-git
+    environment:
+      - GHC_LIB_VER: "8.5"
+      - GHC_REV: e4a1f032da39d8ee58498962cdc9bf5fed7b376e
+      - GHC_VER: "8.5.20171207"
     steps:
       - checkout
       - setup_remote_docker
       - run: |
           docker login -u terrorjack -p $DOCKER_PASS
-          docker build -t terrorjack/meikyu:ghc-8.5.20171207 -t terrorjack/meikyu:ghc-head .
-          docker push terrorjack/meikyu:ghc-8.5.20171207
+          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN -t terrorjack/meikyu:ghc-$GHC_VER -t terrorjack/meikyu:ghc-head .
+          docker push terrorjack/meikyu:ghc-$GHC_VER
           docker push terrorjack/meikyu:ghc-head

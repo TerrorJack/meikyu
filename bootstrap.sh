@@ -45,22 +45,32 @@ stack --no-terminal --resolver lts-9 --system-ghc install \
 cd /tmp
 git clone git://git.haskell.org/ghc.git
 cd ghc
-git checkout e4a1f032da39d8ee58498962cdc9bf5fed7b376e
+git checkout $GHC_REV
 git submodule update --init --recursive
 mv /tmp/build.mk mk/
 ./boot
-SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-8.5.20171207 --disable-ld-override
+SPHINXBUILD=/usr/bin/sphinx-build-3 ./configure --prefix=/root/.stack/programs/x86_64-linux/ghc-$GHC_VER --disable-ld-override
 make -j4
 make install
-sed -i -e "s,ghc-8.5.20171207,ghc-8.5," /root/.stack/programs/x86_64-linux/ghc-8.5.20171207/share/doc/ghc-8.5.20171207/html/index.html
-printf "installed" > /root/.stack/programs/x86_64-linux/ghc-8.5.20171207.installed
-apk del ghc
+sed -i -e "s,ghc-$GHC_VER,ghc-$GHC_LIB_VER," /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html/index.html
+printf "installed" > /root/.stack/programs/x86_64-linux/ghc-$GHC_VER.installed
 
+cp -r /root/.stack/programs/x86_64-linux/ghc-$GHC_VER/share/doc/ghc-$GHC_VER/html /tmp
+cd /tmp/html
+touch .nojekyll
+git init
+git checkout -b gh-pages
+git add --all
+git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
+git push https://TerrorJack:$GITHUB_ACCESS_TOKEN@github.com/TerrorJack/meikyu.git gh-pages --force
+cd /root
+
+apk del ghc
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
-    /tmp/llvm \
+    /tmp/html \
     /tmp/stack-1.6.1-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
