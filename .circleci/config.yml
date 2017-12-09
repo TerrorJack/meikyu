@@ -5,7 +5,7 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 5695f462f604fc63cbb45a7f3073bc114f9b475f
+      - GHC_REV: 4335c07ca7e64624819b22644d7591853826bd75
       - GHC_VER: "8.5.20171208"
     branches:
       ignore:
