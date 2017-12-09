@@ -75,7 +75,6 @@ apk del \
     ghc \
     gmp-dev \
     make \
-    musl-dev \
     patch \
     perl \
     py3-sphinx \
