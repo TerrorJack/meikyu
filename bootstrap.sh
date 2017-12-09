@@ -4,7 +4,6 @@ apk upgrade --no-cache --no-progress
 apk add --no-cache --no-progress \
     autoconf \
     automake \
-    bind-tools \
     binutils-gold \
     bzip2 \
     ca-certificates \
@@ -13,29 +12,25 @@ apk add --no-cache --no-progress \
     findutils \
     g++ \
     gawk \
+    gcc \
     ghc \
     git \
     gmp-dev \
     gzip \
-    libedit-dev \
     libffi-dev \
     make \
     musl-dev \
-    numactl-dev \
+    ncurses-dev \
     openssh \
     patch \
     perl \
     py3-sphinx \
     sed \
     tar \
-    wget \
-    xz \
     zlib-dev
 
 mkdir -p /root/.local/bin
 cd /root/.local/bin
-mv /tmp/cabal .
-chmod u+x cabal
 tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.1-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
@@ -67,7 +62,25 @@ git commit -q --message="HTML documentation of ghc/ghc@$GHC_REV"
 git push https://TerrorJack:$GITHUB_ACCESS_TOKEN@github.com/TerrorJack/meikyu.git gh-pages --force
 cd /root
 
-apk del ghc
+apk del \
+    autoconf \
+    automake \
+    binutils-gold \
+    bzip2 \
+    coreutils \
+    file \
+    findutils \
+    g++ \
+    gawk \
+    ghc \
+    gmp-dev \
+    make \
+    musl-dev \
+    patch \
+    perl \
+    py3-sphinx \
+    sed
+
 mv /root/.stack/programs /tmp/programs
 rm -rf \
     /tmp/bootstrap.sh \
