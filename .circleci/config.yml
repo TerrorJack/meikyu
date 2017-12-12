@@ -1,6 +1,24 @@
 version: 2
+
 jobs:
-  build:
+  ghc-head-unregisterised:
+    docker:
+      - image: docker:stable-git
+    environment:
+      - GHC_LIB_VER: "8.5"
+      - GHC_REV: 9d299253e29558b7d18e6643e1a84fb2bbbecfe5
+      - GHC_VER: "8.5.20171211"
+      - GHC_CONF_OPTS: --enable-unregisterised
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+          docker login -u terrorjack -p $DOCKER_PASS
+          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --build-arg GHC_CONF_OPTS=$GHC_CONF_OPTS -t terrorjack/meikyu:ghc-$GHC_VER-unregisterised -t terrorjack/meikyu:ghc-head-unregisterised .
+          docker push terrorjack/meikyu:ghc-$GHC_VER-unregisterised
+          docker push terrorjack/meikyu:ghc-head-unregisterised
+
+  ghc-head:
     docker:
       - image: docker:stable-git
     environment:
@@ -12,6 +30,13 @@ jobs:
       - setup_remote_docker
       - run: |
           docker login -u terrorjack -p $DOCKER_PASS
-          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN -t terrorjack/meikyu:ghc-$GHC_VER -t terrorjack/meikyu:ghc-head .
+          docker build --build-arg GHC_LIB_VER=$GHC_LIB_VER --build-arg GHC_REV=$GHC_REV --build-arg GHC_VER=$GHC_VER --build-arg GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN --build-arg GHC_CONF_OPTS="" -t terrorjack/meikyu:ghc-$GHC_VER -t terrorjack/meikyu:ghc-head .
           docker push terrorjack/meikyu:ghc-$GHC_VER
           docker push terrorjack/meikyu:ghc-head
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - ghc-head-unregisterised
+      - ghc-head
