@@ -5,8 +5,8 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 4335c07ca7e64624819b22644d7591853826bd75
-      - GHC_VER: "8.5.20171208"
+      - GHC_REV: 9d299253e29558b7d18e6643e1a84fb2bbbecfe5
+      - GHC_VER: "8.5.20171211"
     steps:
       - checkout
       - setup_remote_docker
