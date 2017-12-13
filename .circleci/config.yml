@@ -6,7 +6,7 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 321b420f4582d103ca7b304867b916a749712e9f
+      - GHC_REV: 0a12d92a8f65d374f9317af2759af2b46267ad5c
       - GHC_VER: "8.5.20171213"
       - GHC_CONF_OPTS: --enable-unregisterised
     steps:
@@ -23,7 +23,7 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 321b420f4582d103ca7b304867b916a749712e9f
+      - GHC_REV: 0a12d92a8f65d374f9317af2759af2b46267ad5c
       - GHC_VER: "8.5.20171213"
     steps:
       - checkout
