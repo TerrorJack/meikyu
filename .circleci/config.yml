@@ -6,8 +6,8 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 4a331e659f636e28330142b6df90cb0772a19463
-      - GHC_VER: "8.5.20171214"
+      - GHC_REV: 68149452a793aedd8d468b689dc93fb2ba5ec436
+      - GHC_VER: "8.5.20171215"
       - GHC_CONF_OPTS: --enable-unregisterised
     steps:
       - checkout
@@ -23,8 +23,8 @@ jobs:
       - image: docker:stable-git
     environment:
       - GHC_LIB_VER: "8.5"
-      - GHC_REV: 4a331e659f636e28330142b6df90cb0772a19463
-      - GHC_VER: "8.5.20171214"
+      - GHC_REV: 68149452a793aedd8d468b689dc93fb2ba5ec436
+      - GHC_VER: "8.5.20171215"
     steps:
       - checkout
       - setup_remote_docker
