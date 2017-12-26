@@ -31,7 +31,7 @@ apk add --no-cache --no-progress \
 
 mkdir -p /root/.local/bin
 cd /root/.local/bin
-tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.1-linux-x86_64-static.tar.gz
+tar xz --wildcards --strip-components=1 -C . '*/stack' -f /tmp/stack-1.6.3-linux-x86_64-static.tar.gz
 stack --no-terminal --resolver lts-9 --system-ghc install \
     alex \
     happy \
@@ -85,7 +85,7 @@ rm -rf \
     /tmp/bootstrap.sh \
     /tmp/ghc \
     /tmp/html \
-    /tmp/stack-1.6.1-linux-x86_64-static.tar.gz \
+    /tmp/stack-1.6.3-linux-x86_64-static.tar.gz \
     /root/.local/bin/HsColour \
     /root/.local/bin/alex \
     /root/.local/bin/happy \
