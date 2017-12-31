@@ -7,7 +7,6 @@ GhcStage2HcOpts           = -O2
 GhcLibHcOpts              = -O2
 BUILD_PROF_LIBS           = YES
 SplitSections             = YES
-BUILD_EXTRA_PKGS          = YES
 BUILD_SPHINX_HTML         = YES
 BUILD_SPHINX_PDF          = NO
 BUILD_MAN                 = YES
