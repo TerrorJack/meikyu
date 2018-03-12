@@ -1,0 +1,706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LINE 1 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-2"></a><span class="hs-pragma">{-# LANGUAGE CApiFFI, CPP, DeriveDataTypeable, NondecreasingIndentation #-}</span><span>
+</span><a name="line-3"></a><span class="hs-pragma">{-# OPTIONS_GHC -fno-cse #-}</span><span> </span><span class="hs-comment">-- global variables</span><span>
+</span><a name="line-4"></a><span class="hs-pragma">{-# LANGUAGE Trustworthy #-}</span><span>
+</span><a name="line-5"></a><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
+</span><a name="line-6"></a><span class="hs-comment">-- |</span><span>
+</span><a name="line-7"></a><span class="hs-comment">-- Module      :  System.Posix.Signals</span><span>
+</span><a name="line-8"></a><span class="hs-comment">-- Copyright   :  (c) The University of Glasgow 2002</span><span>
+</span><a name="line-9"></a><span class="hs-comment">-- License     :  BSD-style (see the file libraries/base/LICENSE)</span><span>
+</span><a name="line-10"></a><span class="hs-comment">--</span><span>
+</span><a name="line-11"></a><span class="hs-comment">-- Maintainer  :  libraries@haskell.org</span><span>
+</span><a name="line-12"></a><span class="hs-comment">-- Stability   :  provisional</span><span>
+</span><a name="line-13"></a><span class="hs-comment">-- Portability :  non-portable (requires POSIX)</span><span>
+</span><a name="line-14"></a><span class="hs-comment">--</span><span>
+</span><a name="line-15"></a><span class="hs-comment">-- POSIX signal support</span><span>
+</span><a name="line-16"></a><span class="hs-comment">--</span><span>
+</span><a name="line-17"></a><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
+</span><a name="line-18"></a><span>
+</span><a name="line-19"></a><span>
+</span><a name="line-20"></a><span class="hs-cpp">#include &quot;HsUnixConfig.h&quot;</span><span>
+</span><a name="line-21"></a><span>
+</span><a name="line-22"></a><span>
+</span><a name="line-23"></a><span class="hs-pragma">{-# LINE 22 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-24"></a><span>
+</span><a name="line-25"></a><span>
+</span><a name="line-26"></a><span class="hs-pragma">{-# LINE 24 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-27"></a><span>
+</span><a name="line-28"></a><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">Posix</span><span class="hs-operator">.</span><span class="hs-identifier">Signals</span><span> </span><span class="hs-special">(</span><span>
+</span><a name="line-29"></a><span>  </span><span class="hs-comment">-- * The Signal type</span><span>
+</span><a name="line-30"></a><span>  </span><a href="System.Posix.Signals.html#nullSignal"><span class="hs-identifier hs-var">Signal</span></a><span class="hs-special">,</span><span>
+</span><a name="line-31"></a><span>
+</span><a name="line-32"></a><span>  </span><span class="hs-comment">-- * Specific signals</span><span>
+</span><a name="line-33"></a><span>  </span><span class="hs-identifier">nullSignal</span><span class="hs-special">,</span><span>
+</span><a name="line-34"></a><span>  </span><a href="System.Posix.Signals.html#processStatusChanged"><span class="hs-identifier hs-var">internalAbort</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigABRT</span><span class="hs-special">,</span><span>
+</span><a name="line-35"></a><span>  </span><a href="System.Posix.Signals.html#continueProcess"><span class="hs-identifier hs-var">realTimeAlarm</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigALRM</span><span class="hs-special">,</span><span>
+</span><a name="line-36"></a><span>  </span><a href="System.Posix.Signals.html#floatingPointException"><span class="hs-identifier hs-var">busError</span></a><span class="hs-special">,</span><span> </span><a href="System.Posix.Signals.html#floatingPointException"><span class="hs-identifier hs-var">sigBUS</span></a><span class="hs-special">,</span><span>
+</span><a name="line-37"></a><span>  </span><span class="hs-identifier">processStatusChanged</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigCHLD</span><span class="hs-special">,</span><span>
+</span><a name="line-38"></a><span>  </span><a href="System.Posix.Signals.html#illegalInstruction"><span class="hs-identifier hs-var">continueProcess</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigCONT</span><span class="hs-special">,</span><span>
+</span><a name="line-39"></a><span>  </span><span class="hs-identifier">floatingPointException</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigFPE</span><span class="hs-special">,</span><span>
+</span><a name="line-40"></a><span>  </span><span class="hs-identifier">lostConnection</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigHUP</span><span class="hs-special">,</span><span>
+</span><a name="line-41"></a><span>  </span><span class="hs-identifier">illegalInstruction</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigILL</span><span class="hs-special">,</span><span>
+</span><a name="line-42"></a><span>  </span><a href="System.Posix.Signals.html#keyboardTermination"><span class="hs-identifier hs-var">keyboardSignal</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigINT</span><span class="hs-special">,</span><span>
+</span><a name="line-43"></a><span>  </span><a href="System.Posix.Signals.html#segmentationViolation"><span class="hs-identifier hs-var">killProcess</span></a><span class="hs-special">,</span><span> </span><a href="System.Posix.Signals.html#segmentationViolation"><span class="hs-identifier hs-var">sigKILL</span></a><span class="hs-special">,</span><span>
+</span><a name="line-44"></a><span>  </span><span class="hs-identifier">openEndedPipe</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigPIPE</span><span class="hs-special">,</span><span>
+</span><a name="line-45"></a><span>  </span><a href="System.Posix.Signals.html#softwareTermination"><span class="hs-identifier hs-var">keyboardTermination</span></a><span class="hs-special">,</span><span> </span><a href="System.Posix.Signals.html#sigTERM"><span class="hs-identifier hs-var">sigQUIT</span></a><span class="hs-special">,</span><span>
+</span><a name="line-46"></a><span>  </span><span class="hs-identifier">segmentationViolation</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigSEGV</span><span class="hs-special">,</span><span>
+</span><a name="line-47"></a><span>  </span><a href="System.Posix.Signals.html#backgroundRead"><span class="hs-identifier hs-var">softwareStop</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigSTOP</span><span class="hs-special">,</span><span>
+</span><a name="line-48"></a><span>  </span><span class="hs-identifier">softwareTermination</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigTERM</span><span class="hs-special">,</span><span>
+</span><a name="line-49"></a><span>  </span><a href="System.Posix.Signals.html#userDefinedSignal1"><span class="hs-identifier hs-var">keyboardStop</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigTSTP</span><span class="hs-special">,</span><span>
+</span><a name="line-50"></a><span>  </span><a href="System.Posix.Signals.html#userDefinedSignal2"><span class="hs-identifier hs-var">backgroundRead</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigTTIN</span><span class="hs-special">,</span><span>
+</span><a name="line-51"></a><span>  </span><span class="hs-identifier">backgroundWrite</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigTTOU</span><span class="hs-special">,</span><span>
+</span><a name="line-52"></a><span>  </span><span class="hs-identifier">userDefinedSignal1</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigUSR1</span><span class="hs-special">,</span><span>
+</span><a name="line-53"></a><span>  </span><span class="hs-identifier">userDefinedSignal2</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigUSR2</span><span class="hs-special">,</span><span>
+</span><a name="line-54"></a><span>
+</span><a name="line-55"></a><span class="hs-pragma">{-# LINE 52 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-56"></a><span>  </span><a href="System.Posix.Signals.html#breakpointTrap"><span class="hs-identifier hs-var">pollableEvent</span></a><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigPOLL</span><span class="hs-special">,</span><span>
+</span><a name="line-57"></a><span>
+</span><a name="line-58"></a><span class="hs-pragma">{-# LINE 54 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-59"></a><span>  </span><span class="hs-identifier">profilingTimerExpired</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigPROF</span><span class="hs-special">,</span><span>
+</span><a name="line-60"></a><span>  </span><a href="System.Posix.Signals.html#fileSizeLimitExceeded"><span class="hs-identifier hs-var">badSystemCall</span></a><span class="hs-special">,</span><span> </span><a href="System.Posix.Signals.html#fileSizeLimitExceeded"><span class="hs-identifier hs-var">sigSYS</span></a><span class="hs-special">,</span><span>
+</span><a name="line-61"></a><span>  </span><span class="hs-identifier">breakpointTrap</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigTRAP</span><span class="hs-special">,</span><span>
+</span><a name="line-62"></a><span>  </span><span class="hs-identifier">urgentDataAvailable</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigURG</span><span class="hs-special">,</span><span>
+</span><a name="line-63"></a><span>  </span><span class="hs-identifier">virtualTimerExpired</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigVTALRM</span><span class="hs-special">,</span><span>
+</span><a name="line-64"></a><span>  </span><span class="hs-identifier">cpuTimeLimitExceeded</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigXCPU</span><span class="hs-special">,</span><span>
+</span><a name="line-65"></a><span>  </span><span class="hs-identifier">fileSizeLimitExceeded</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">sigXFSZ</span><span class="hs-special">,</span><span>
+</span><a name="line-66"></a><span>
+</span><a name="line-67"></a><span>  </span><span class="hs-comment">-- * Sending signals</span><span>
+</span><a name="line-68"></a><span>  </span><span class="hs-identifier">raiseSignal</span><span class="hs-special">,</span><span>
+</span><a name="line-69"></a><span>  </span><span class="hs-identifier">signalProcess</span><span class="hs-special">,</span><span>
+</span><a name="line-70"></a><span>  </span><span class="hs-identifier">signalProcessGroup</span><span class="hs-special">,</span><span>
+</span><a name="line-71"></a><span>
+</span><a name="line-72"></a><span>  </span><span class="hs-comment">-- * Handling signals</span><span>
+</span><a name="line-73"></a><span>  </span><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier hs-type">Handler</span></a><span class="hs-special">(</span><span class="hs-identifier">Default</span><span class="hs-special">,</span><span class="hs-identifier">Ignore</span><span class="hs-special">,</span><span class="hs-identifier">Catch</span><span class="hs-special">,</span><span class="hs-identifier">CatchOnce</span><span class="hs-special">,</span><span class="hs-identifier">CatchInfo</span><span class="hs-special">,</span><span class="hs-identifier">CatchInfoOnce</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><a name="line-74"></a><span>  </span><a href="System.Posix.Signals.html#emptySignalSet"><span class="hs-identifier hs-var">SignalInfo</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">SignalSpecificInfo</span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><a name="line-75"></a><span>  </span><span class="hs-identifier">installHandler</span><span class="hs-special">,</span><span>
+</span><a name="line-76"></a><span>
+</span><a name="line-77"></a><span>  </span><span class="hs-comment">-- * Signal sets</span><span>
+</span><a name="line-78"></a><span>  </span><a href="System.Posix.Signals.html#getSignalMask"><span class="hs-identifier hs-var">SignalSet</span></a><span class="hs-special">,</span><span>
+</span><a name="line-79"></a><span>  </span><span class="hs-identifier">emptySignalSet</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">fullSignalSet</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">reservedSignals</span><span class="hs-special">,</span><span>
+</span><a name="line-80"></a><span>  </span><span class="hs-identifier">addSignal</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">deleteSignal</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">inSignalSet</span><span class="hs-special">,</span><span>
+</span><a name="line-81"></a><span>
+</span><a name="line-82"></a><span>  </span><span class="hs-comment">-- * The process signal mask</span><span>
+</span><a name="line-83"></a><span>  </span><span class="hs-identifier">getSignalMask</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">setSignalMask</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">blockSignals</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">unblockSignals</span><span class="hs-special">,</span><span>
+</span><a name="line-84"></a><span>
+</span><a name="line-85"></a><span>  </span><span class="hs-comment">-- * The alarm timer</span><span>
+</span><a name="line-86"></a><span>  </span><span class="hs-identifier">scheduleAlarm</span><span class="hs-special">,</span><span>
+</span><a name="line-87"></a><span>
+</span><a name="line-88"></a><span>  </span><span class="hs-comment">-- * Waiting for signals</span><span>
+</span><a name="line-89"></a><span>  </span><span class="hs-identifier">getPendingSignals</span><span class="hs-special">,</span><span>
+</span><a name="line-90"></a><span>  </span><span class="hs-identifier">awaitSignal</span><span class="hs-special">,</span><span>
+</span><a name="line-91"></a><span>
+</span><a name="line-92"></a><span>  </span><span class="hs-comment">-- * The @NOCLDSTOP@ flag</span><span>
+</span><a name="line-93"></a><span>  </span><span class="hs-identifier">setStoppedChildFlag</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">queryStoppedChildFlag</span><span class="hs-special">,</span><span>
+</span><a name="line-94"></a><span>
+</span><a name="line-95"></a><span>  </span><span class="hs-comment">-- MISSING FUNCTIONALITY:</span><span>
+</span><a name="line-96"></a><span>  </span><span class="hs-comment">-- sigaction(), (inc. the sigaction structure + flags etc.)</span><span>
+</span><a name="line-97"></a><span>  </span><span class="hs-comment">-- the siginfo structure</span><span>
+</span><a name="line-98"></a><span>  </span><span class="hs-comment">-- sigaltstack()</span><span>
+</span><a name="line-99"></a><span>  </span><span class="hs-comment">-- sighold, sigignore, sigpause, sigrelse, sigset</span><span>
+</span><a name="line-100"></a><span>  </span><span class="hs-comment">-- siginterrupt</span><span>
+</span><a name="line-101"></a><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><a name="line-102"></a><span>
+</span><a name="line-103"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.Storable.html"><span class="hs-identifier">Data</span><span class="hs-operator">.</span><span class="hs-identifier">Word</span></a><span>
+</span><a name="line-104"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/System.IO.Unsafe.html"><span class="hs-identifier">Foreign</span><span class="hs-operator">.</span><span class="hs-identifier">C</span></a><span>
+</span><a name="line-105"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/System.Posix.Types.html"><span class="hs-identifier">Foreign</span><span class="hs-operator">.</span><span class="hs-identifier">ForeignPtr</span></a><span>
+</span><a name="line-106"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/System.Posix.Internals.html"><span class="hs-identifier">Foreign</span><span class="hs-operator">.</span><span class="hs-identifier">Marshal</span></a><span>
+</span><a name="line-107"></a><span class="hs-keyword">import</span><span> </span><a href="System.Posix.Process.html"><span class="hs-identifier">Foreign</span><span class="hs-operator">.</span><span class="hs-identifier">Ptr</span></a><span>
+</span><a name="line-108"></a><span class="hs-keyword">import</span><span> </span><a href="System.Posix.Process.Internals.html"><span class="hs-identifier">Foreign</span><span class="hs-operator">.</span><span class="hs-identifier">Storable</span></a><span>
+</span><a name="line-109"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Data.Dynamic.html"><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">IO</span><span class="hs-operator">.</span></a><span class="hs-identifier">Unsafe</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">unsafePerformIO</span><span class="hs-special">)</span><span>
+</span><a name="line-110"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">Posix</span><span class="hs-operator">.</span><span class="hs-identifier">Types</span><span>
+</span><a name="line-111"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">Posix</span><span class="hs-operator">.</span><span class="hs-identifier">Internals</span><span>
+</span><a name="line-112"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">Posix</span><span class="hs-operator">.</span><span class="hs-identifier">Process</span><span>
+</span><a name="line-113"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">System</span><span class="hs-operator">.</span><span class="hs-identifier">Posix</span><span class="hs-operator">.</span><span class="hs-identifier">Process</span><span class="hs-operator">.</span><span class="hs-identifier">Internals</span><span>
+</span><a name="line-114"></a><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">Data</span><span class="hs-operator">.</span><span class="hs-identifier">Dynamic</span><span>
+</span><a name="line-115"></a><span>
+</span><a name="line-116"></a><span class="hs-cpp">#include &quot;rts/Signals.h&quot;</span><span>
+</span><a name="line-117"></a><span>
+</span><a name="line-118"></a><span class="hs-keyword">import</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Conc.html"><span class="hs-identifier">GHC</span><span class="hs-operator">.</span><span class="hs-identifier">Conc</span></a><span> </span><span class="hs-keyword">hiding</span><span> </span><span class="hs-special">(</span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Conc.Signal.html#Signal"><span class="hs-identifier hs-type">Signal</span></a><span class="hs-special">)</span><span>
+</span><a name="line-119"></a><span>
+</span><a name="line-120"></a><span class="hs-comment">-- -----------------------------------------------------------------------------</span><span>
+</span><a name="line-121"></a><span class="hs-comment">-- Specific signals</span><span>
+</span><a name="line-122"></a><span>
+</span><a name="line-123"></a><span class="hs-identifier">nullSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="System.Posix.Signals.html#Signal"><span class="hs-identifier hs-type">Signal</span></a><span>
+</span><a name="line-124"></a><a name="nullSignal"><a href="System.Posix.Signals.html#nullSignal"><span class="hs-identifier">nullSignal</span></a></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-number">0</span><span>
+</span><a name="line-125"></a><span>
+</span><a name="line-126"></a><span class="hs-comment">-- | Process abort signal.</span><span>
+</span><a name="line-127"></a><span class="hs-identifier">sigABRT</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-128"></a><a name="sigABRT"><a href="System.Posix.Signals.html#sigABRT"><span class="hs-identifier">sigABRT</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGABRT</span><span>
+</span><a name="line-129"></a><span>
+</span><a name="line-130"></a><span class="hs-comment">-- | Alarm clock.</span><span>
+</span><a name="line-131"></a><span class="hs-identifier">sigALRM</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-132"></a><a name="sigALRM"><a href="System.Posix.Signals.html#sigALRM"><span class="hs-identifier">sigALRM</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGALRM</span><span>
+</span><a name="line-133"></a><span>
+</span><a name="line-134"></a><span class="hs-comment">-- | Access to an undefined portion of a memory object.</span><span>
+</span><a name="line-135"></a><span class="hs-identifier">sigBUS</span><span>    </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-136"></a><a name="sigBUS"><a href="System.Posix.Signals.html#sigBUS"><span class="hs-identifier">sigBUS</span></a></a><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGBUS</span><span>
+</span><a name="line-137"></a><span>
+</span><a name="line-138"></a><span class="hs-comment">-- | Child process terminated, stopped, or continued.</span><span>
+</span><a name="line-139"></a><span class="hs-identifier">sigCHLD</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-140"></a><a name="sigCHLD"><a href="System.Posix.Signals.html#sigCHLD"><span class="hs-identifier">sigCHLD</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGCHLD</span><span>
+</span><a name="line-141"></a><span>
+</span><a name="line-142"></a><span class="hs-comment">-- | Continue executing, if stopped.</span><span>
+</span><a name="line-143"></a><span class="hs-identifier">sigCONT</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-144"></a><a name="sigCONT"><a href="System.Posix.Signals.html#sigCONT"><span class="hs-identifier">sigCONT</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGCONT</span><span>
+</span><a name="line-145"></a><span>
+</span><a name="line-146"></a><span class="hs-comment">-- | Erroneous arithmetic operation.</span><span>
+</span><a name="line-147"></a><span class="hs-identifier">sigFPE</span><span>    </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-148"></a><a name="sigFPE"><a href="System.Posix.Signals.html#sigFPE"><span class="hs-identifier">sigFPE</span></a></a><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGFPE</span><span>
+</span><a name="line-149"></a><span>
+</span><a name="line-150"></a><span class="hs-comment">-- | Hangup.</span><span>
+</span><a name="line-151"></a><span class="hs-identifier">sigHUP</span><span>    </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-152"></a><a name="sigHUP"><a href="System.Posix.Signals.html#sigHUP"><span class="hs-identifier">sigHUP</span></a></a><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGHUP</span><span>
+</span><a name="line-153"></a><span>
+</span><a name="line-154"></a><span class="hs-comment">-- | Illegal instruction.</span><span>
+</span><a name="line-155"></a><span class="hs-identifier">sigILL</span><span>    </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-156"></a><a name="sigILL"><a href="System.Posix.Signals.html#sigILL"><span class="hs-identifier">sigILL</span></a></a><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGILL</span><span>
+</span><a name="line-157"></a><span>
+</span><a name="line-158"></a><span class="hs-comment">-- | Terminal interrupt signal.</span><span>
+</span><a name="line-159"></a><span class="hs-identifier">sigINT</span><span>    </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-160"></a><a name="sigINT"><a href="System.Posix.Signals.html#sigINT"><span class="hs-identifier">sigINT</span></a></a><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGINT</span><span>
+</span><a name="line-161"></a><span>
+</span><a name="line-162"></a><span class="hs-comment">-- | Kill (cannot be caught or ignored).</span><span>
+</span><a name="line-163"></a><span class="hs-identifier">sigKILL</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-164"></a><a name="sigKILL"><a href="System.Posix.Signals.html#sigKILL"><span class="hs-identifier">sigKILL</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGKILL</span><span>
+</span><a name="line-165"></a><span>
+</span><a name="line-166"></a><span class="hs-comment">-- | Write on a pipe with no one to read it.</span><span>
+</span><a name="line-167"></a><span class="hs-identifier">sigPIPE</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-168"></a><a name="sigPIPE"><a href="System.Posix.Signals.html#sigPIPE"><span class="hs-identifier">sigPIPE</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGPIPE</span><span>
+</span><a name="line-169"></a><span>
+</span><a name="line-170"></a><span class="hs-comment">-- | Terminal quit signal.</span><span>
+</span><a name="line-171"></a><span class="hs-identifier">sigQUIT</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-172"></a><a name="sigQUIT"><a href="System.Posix.Signals.html#sigQUIT"><span class="hs-identifier">sigQUIT</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGQUIT</span><span>
+</span><a name="line-173"></a><span>
+</span><a name="line-174"></a><span class="hs-comment">-- | Invalid memory reference.</span><span>
+</span><a name="line-175"></a><span class="hs-identifier">sigSEGV</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-176"></a><a name="sigSEGV"><a href="System.Posix.Signals.html#sigSEGV"><span class="hs-identifier">sigSEGV</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGSEGV</span><span>
+</span><a name="line-177"></a><span>
+</span><a name="line-178"></a><span class="hs-comment">-- | Stop executing (cannot be caught or ignored).</span><span>
+</span><a name="line-179"></a><span class="hs-identifier">sigSTOP</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-180"></a><a name="sigSTOP"><a href="System.Posix.Signals.html#sigSTOP"><span class="hs-identifier">sigSTOP</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGSTOP</span><span>
+</span><a name="line-181"></a><span>
+</span><a name="line-182"></a><span class="hs-comment">-- | Termination signal.</span><span>
+</span><a name="line-183"></a><span class="hs-identifier">sigTERM</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-184"></a><a name="sigTERM"><a href="System.Posix.Signals.html#sigTERM"><span class="hs-identifier">sigTERM</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGTERM</span><span>
+</span><a name="line-185"></a><span>
+</span><a name="line-186"></a><span class="hs-comment">-- | Terminal stop signal.</span><span>
+</span><a name="line-187"></a><span class="hs-identifier">sigTSTP</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-188"></a><a name="sigTSTP"><a href="System.Posix.Signals.html#sigTSTP"><span class="hs-identifier">sigTSTP</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGTSTP</span><span>
+</span><a name="line-189"></a><span>
+</span><a name="line-190"></a><span class="hs-comment">-- | Background process attempting read.</span><span>
+</span><a name="line-191"></a><span class="hs-identifier">sigTTIN</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-192"></a><a name="sigTTIN"><a href="System.Posix.Signals.html#sigTTIN"><span class="hs-identifier">sigTTIN</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGTTIN</span><span>
+</span><a name="line-193"></a><span>
+</span><a name="line-194"></a><span class="hs-comment">-- | Background process attempting write.</span><span>
+</span><a name="line-195"></a><span class="hs-identifier">sigTTOU</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-196"></a><a name="sigTTOU"><a href="System.Posix.Signals.html#sigTTOU"><span class="hs-identifier">sigTTOU</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGTTOU</span><span>
+</span><a name="line-197"></a><span>
+</span><a name="line-198"></a><span class="hs-comment">-- | User-defined signal 1.</span><span>
+</span><a name="line-199"></a><span class="hs-identifier">sigUSR1</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-200"></a><a name="sigUSR1"><a href="System.Posix.Signals.html#sigUSR1"><span class="hs-identifier">sigUSR1</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGUSR1</span><span>
+</span><a name="line-201"></a><span>
+</span><a name="line-202"></a><span class="hs-comment">-- | User-defined signal 2.</span><span>
+</span><a name="line-203"></a><span class="hs-identifier">sigUSR2</span><span>   </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Types.html#CInt"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-204"></a><a name="sigPOLL"><a href="System.Posix.Signals.html#sigPOLL"><span class="hs-identifier">sigUSR2</span></a></a><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGUSR2</span><span>
+</span><a name="line-205"></a><span>
+</span><a name="line-206"></a><span>
+</span><a name="line-207"></a><span class="hs-pragma">{-# LINE 202 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-208"></a><span class="hs-comment">-- | Pollable event.</span><span>
+</span><a name="line-209"></a><a name="sigPROF"><a href="System.Posix.Signals.html#sigPROF"><span class="hs-identifier">sigPOLL</span></a></a><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-210"></a><span class="hs-identifier">sigPOLL</span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGPOLL</span><span>
+</span><a name="line-211"></a><span>
+</span><a name="line-212"></a><span class="hs-pragma">{-# LINE 206 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-213"></a><span>
+</span><a name="line-214"></a><span class="hs-comment">-- | Profiling timer expired.</span><span>
+</span><a name="line-215"></a><span class="hs-identifier">sigPROF</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-216"></a><span class="hs-identifier">sigPROF</span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGPROF</span><span>
+</span><a name="line-217"></a><span>
+</span><a name="line-218"></a><span class="hs-comment">-- | Bad system call.</span><span>
+</span><a name="line-219"></a><span class="hs-identifier">sigSYS</span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-220"></a><span class="hs-identifier">sigSYS</span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGSYS</span><span>
+</span><a name="line-221"></a><span>
+</span><a name="line-222"></a><span class="hs-comment">-- | Trace/breakpoint trap.</span><span>
+</span><a name="line-223"></a><span class="hs-identifier">sigTRAP</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-224"></a><span class="hs-identifier">sigTRAP</span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGTRAP</span><span>
+</span><a name="line-225"></a><span>
+</span><a name="line-226"></a><span class="hs-comment">-- | High bandwidth data is available at a socket.</span><span>
+</span><a name="line-227"></a><span class="hs-identifier">sigURG</span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-228"></a><span class="hs-identifier">sigURG</span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGURG</span><span>
+</span><a name="line-229"></a><span>
+</span><a name="line-230"></a><span class="hs-comment">-- | Virtual timer expired.</span><span>
+</span><a name="line-231"></a><span class="hs-identifier">sigVTALRM</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-232"></a><span class="hs-identifier">sigVTALRM</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGVTALRM</span><span>
+</span><a name="line-233"></a><span>
+</span><a name="line-234"></a><span class="hs-comment">-- | CPU time limit exceeded.</span><span>
+</span><a name="line-235"></a><span class="hs-identifier">sigXCPU</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-236"></a><span class="hs-identifier">sigXCPU</span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGXCPU</span><span>
+</span><a name="line-237"></a><span>
+</span><a name="line-238"></a><span class="hs-comment">-- | File size limit exceeded.</span><span>
+</span><a name="line-239"></a><span class="hs-identifier">sigXFSZ</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-240"></a><span class="hs-identifier">sigXFSZ</span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CONST_SIGXFSZ</span><span>
+</span><a name="line-241"></a><span>
+</span><a name="line-242"></a><span class="hs-comment">-- | Alias for 'sigABRT'.</span><span>
+</span><a name="line-243"></a><span class="hs-identifier">internalAbort</span><span> </span><span class="hs-glyph">::</span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-244"></a><span class="hs-identifier">internalAbort</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigABRT</span><span>
+</span><a name="line-245"></a><span>
+</span><a name="line-246"></a><span class="hs-comment">-- | Alias for 'sigALRM'.</span><span>
+</span><a name="line-247"></a><span class="hs-identifier">realTimeAlarm</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-248"></a><span class="hs-identifier">realTimeAlarm</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigALRM</span><span>
+</span><a name="line-249"></a><span>
+</span><a name="line-250"></a><span class="hs-comment">-- | Alias for 'sigBUS'.</span><span>
+</span><a name="line-251"></a><span class="hs-identifier">busError</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-252"></a><span class="hs-identifier">busError</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigBUS</span><span>
+</span><a name="line-253"></a><span>
+</span><a name="line-254"></a><span class="hs-comment">-- | Alias for 'sigCHLD'.</span><span>
+</span><a name="line-255"></a><span class="hs-identifier">processStatusChanged</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-256"></a><span class="hs-identifier">processStatusChanged</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigCHLD</span><span>
+</span><a name="line-257"></a><span>
+</span><a name="line-258"></a><span class="hs-comment">-- | Alias for 'sigCONT'.</span><span>
+</span><a name="line-259"></a><span class="hs-identifier">continueProcess</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-260"></a><span class="hs-identifier">continueProcess</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigCONT</span><span>
+</span><a name="line-261"></a><span>
+</span><a name="line-262"></a><span class="hs-comment">-- | Alias for 'sigFPE'.</span><span>
+</span><a name="line-263"></a><span class="hs-identifier">floatingPointException</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-264"></a><span class="hs-identifier">floatingPointException</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigFPE</span><span>
+</span><a name="line-265"></a><span>
+</span><a name="line-266"></a><span class="hs-comment">-- | Alias for 'sigHUP'.</span><span>
+</span><a name="line-267"></a><span class="hs-identifier">lostConnection</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-268"></a><span class="hs-identifier">lostConnection</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigHUP</span><span>
+</span><a name="line-269"></a><span>
+</span><a name="line-270"></a><span class="hs-comment">-- | Alias for 'sigILL'.</span><span>
+</span><a name="line-271"></a><span class="hs-identifier">illegalInstruction</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-272"></a><span class="hs-identifier">illegalInstruction</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigILL</span><span>
+</span><a name="line-273"></a><span>
+</span><a name="line-274"></a><span class="hs-comment">-- | Alias for 'sigINT'.</span><span>
+</span><a name="line-275"></a><span class="hs-identifier">keyboardSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-276"></a><span class="hs-identifier">keyboardSignal</span><span> </span><span class="hs-glyph">=</span><span> </span><a href="System.Posix.Signals.html#Signal"><span class="hs-identifier hs-type">sigINT</span></a><span>
+</span><a name="line-277"></a><span>
+</span><a name="line-278"></a><span class="hs-comment">-- | Alias for 'sigKILL'.</span><span>
+</span><a name="line-279"></a><span class="hs-identifier">killProcess</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-280"></a><span class="hs-identifier">killProcess</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigKILL</span><span>
+</span><a name="line-281"></a><span>
+</span><a name="line-282"></a><span class="hs-comment">-- | Alias for 'sigPIPE'.</span><span>
+</span><a name="line-283"></a><span class="hs-identifier">openEndedPipe</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-284"></a><span class="hs-identifier">openEndedPipe</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigPIPE</span><span>
+</span><a name="line-285"></a><span>
+</span><a name="line-286"></a><span class="hs-comment">-- | Alias for 'sigQUIT'.</span><span>
+</span><a name="line-287"></a><span class="hs-identifier">keyboardTermination</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-288"></a><span class="hs-identifier">keyboardTermination</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigQUIT</span><span>
+</span><a name="line-289"></a><span>
+</span><a name="line-290"></a><span class="hs-comment">-- | Alias for 'sigSEGV'.</span><span>
+</span><a name="line-291"></a><span class="hs-identifier">segmentationViolation</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-292"></a><span class="hs-identifier">segmentationViolation</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigSEGV</span><span>
+</span><a name="line-293"></a><span>
+</span><a name="line-294"></a><span class="hs-comment">-- | Alias for 'sigSTOP'.</span><span>
+</span><a name="line-295"></a><span class="hs-identifier">softwareStop</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-296"></a><span class="hs-identifier">softwareStop</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigSTOP</span><span>
+</span><a name="line-297"></a><span>
+</span><a name="line-298"></a><span class="hs-comment">-- | Alias for 'sigTERM'.</span><span>
+</span><a name="line-299"></a><span class="hs-identifier">softwareTermination</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-300"></a><span class="hs-identifier">softwareTermination</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigTERM</span><span>
+</span><a name="line-301"></a><span>
+</span><a name="line-302"></a><span class="hs-comment">-- | Alias for 'sigTSTP'.</span><span>
+</span><a name="line-303"></a><span class="hs-identifier">keyboardStop</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-304"></a><span class="hs-identifier">keyboardStop</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigTSTP</span><span>
+</span><a name="line-305"></a><span>
+</span><a name="line-306"></a><span class="hs-comment">-- | Alias for 'sigTTIN'.</span><span>
+</span><a name="line-307"></a><span class="hs-identifier">backgroundRead</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-308"></a><span class="hs-identifier">backgroundRead</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigTTIN</span><span>
+</span><a name="line-309"></a><span>
+</span><a name="line-310"></a><span class="hs-comment">-- | Alias for 'sigTTOU'.</span><span>
+</span><a name="line-311"></a><span class="hs-identifier">backgroundWrite</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-312"></a><span class="hs-identifier">backgroundWrite</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigTTOU</span><span>
+</span><a name="line-313"></a><span>
+</span><a name="line-314"></a><span class="hs-comment">-- | Alias for 'sigUSR1'.</span><span>
+</span><a name="line-315"></a><span class="hs-identifier">userDefinedSignal1</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-316"></a><span class="hs-identifier">userDefinedSignal1</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigUSR1</span><span>
+</span><a name="line-317"></a><span>
+</span><a name="line-318"></a><span class="hs-comment">-- | Alias for 'sigUSR2'.</span><span>
+</span><a name="line-319"></a><span class="hs-identifier">userDefinedSignal2</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-320"></a><span class="hs-identifier">userDefinedSignal2</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigUSR2</span><span>
+</span><a name="line-321"></a><span>
+</span><a name="line-322"></a><span>
+</span><a name="line-323"></a><span class="hs-pragma">{-# LINE 316 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-324"></a><span class="hs-comment">-- | Alias for 'sigPOLL'.</span><span>
+</span><a name="line-325"></a><span class="hs-identifier">pollableEvent</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-326"></a><span class="hs-identifier">pollableEvent</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigPOLL</span><span>
+</span><a name="line-327"></a><span>
+</span><a name="line-328"></a><span class="hs-pragma">{-# LINE 320 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-329"></a><span>
+</span><a name="line-330"></a><span class="hs-comment">-- | Alias for 'sigPROF'.</span><span>
+</span><a name="line-331"></a><span class="hs-identifier">profilingTimerExpired</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-332"></a><span class="hs-identifier">profilingTimerExpired</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigPROF</span><span>
+</span><a name="line-333"></a><span>
+</span><a name="line-334"></a><span class="hs-comment">-- | Alias for 'sigSYS'.</span><span>
+</span><a name="line-335"></a><a name="urgentDataAvailable"><a href="System.Posix.Signals.html#urgentDataAvailable"><span class="hs-identifier">badSystemCall</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-336"></a><span class="hs-identifier">badSystemCall</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigSYS</span><span>
+</span><a name="line-337"></a><span>
+</span><a name="line-338"></a><span class="hs-comment">-- | Alias for 'sigTRAP'.</span><span>
+</span><a name="line-339"></a><a name="virtualTimerExpired"><a href="System.Posix.Signals.html#virtualTimerExpired"><span class="hs-identifier">breakpointTrap</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-340"></a><span class="hs-identifier">breakpointTrap</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigTRAP</span><span>
+</span><a name="line-341"></a><span>
+</span><a name="line-342"></a><span class="hs-comment">-- | Alias for 'sigURG'.</span><span>
+</span><a name="line-343"></a><a name="cpuTimeLimitExceeded"><a href="System.Posix.Signals.html#cpuTimeLimitExceeded"><span class="hs-identifier">urgentDataAvailable</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><a href="System.Posix.Signals.html#sigXCPU"><span class="hs-identifier hs-var">Signal</span></a><span>
+</span><a name="line-344"></a><span class="hs-identifier">urgentDataAvailable</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigURG</span><span>
+</span><a name="line-345"></a><span>
+</span><a name="line-346"></a><span class="hs-comment">-- | Alias for 'sigVTALRM'.</span><span>
+</span><a name="line-347"></a><a name="fileSizeLimitExceeded"><a href="System.Posix.Signals.html#fileSizeLimitExceeded"><span class="hs-identifier">virtualTimerExpired</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-348"></a><span class="hs-identifier">virtualTimerExpired</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigVTALRM</span><span>
+</span><a name="line-349"></a><span>
+</span><a name="line-350"></a><span class="hs-comment">-- | Alias for 'sigXCPU'.</span><span>
+</span><a name="line-351"></a><span class="hs-identifier">cpuTimeLimitExceeded</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-352"></a><span class="hs-identifier">cpuTimeLimitExceeded</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigXCPU</span><span>
+</span><a name="line-353"></a><span>
+</span><a name="line-354"></a><span class="hs-comment">-- | Alias for 'sigXFSZ'.</span><span>
+</span><a name="line-355"></a><span class="hs-identifier">fileSizeLimitExceeded</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-356"></a><span class="hs-identifier">fileSizeLimitExceeded</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigXFSZ</span><span>
+</span><a name="line-357"></a><span>
+</span><a name="line-358"></a><span class="hs-comment">-- -----------------------------------------------------------------------------</span><span>
+</span><a name="line-359"></a><span class="hs-comment">-- Signal-related functions</span><span>
+</span><a name="line-360"></a><span>
+</span><a name="line-361"></a><span class="hs-comment">-- | @signalProcess int pid@ calls @kill@ to signal process @pid@</span><span>
+</span><a name="line-362"></a><span class="hs-comment">--   with interrupt signal @int@.</span><span>
+</span><a name="line-363"></a><span class="hs-identifier">signalProcess</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">ProcessID</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-364"></a><span class="hs-identifier">signalProcess</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-identifier">pid</span><span>
+</span><a name="line-365"></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;signalProcess&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_kill</span><span> </span><span class="hs-identifier">pid</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-366"></a><span>
+</span><a name="line-367"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;kill&quot;</span><span>
+</span><a name="line-368"></a><span>  </span><span class="hs-identifier">c_kill</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CPid</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-369"></a><span>
+</span><a name="line-370"></a><span>
+</span><a name="line-371"></a><span class="hs-comment">-- | @signalProcessGroup int pgid@ calls @kill@ to signal</span><span>
+</span><a name="line-372"></a><span class="hs-comment">--  all processes in group @pgid@ with interrupt signal @int@.</span><span>
+</span><a name="line-373"></a><span class="hs-identifier">signalProcessGroup</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">ProcessGroupID</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-374"></a><span class="hs-identifier">signalProcessGroup</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1_"><span class="hs-identifier hs-var">sig</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1_"><span class="hs-identifier hs-var">pgid</span></a><span>
+</span><a name="line-375"></a><span>  </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;signalProcessGroup&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_killpg</span><span> </span><span class="hs-identifier">pgid</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-376"></a><span>
+</span><a name="line-377"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;killpg&quot;</span><span>
+</span><a name="line-378"></a><span>  </span><span class="hs-identifier">c_killpg</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CPid</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-379"></a><span>
+</span><a name="line-380"></a><span class="hs-comment">-- | @raiseSignal int@ calls @kill@ to signal the current process</span><span>
+</span><a name="line-381"></a><span class="hs-comment">--   with interrupt signal @int@.</span><span>
+</span><a name="line-382"></a><span class="hs-identifier">raiseSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-383"></a><span class="hs-identifier">raiseSignal</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;raiseSignal&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_raise</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-384"></a><span>
+</span><a name="line-385"></a><span class="hs-comment">-- See also note in GHC's rts/RtsUtils.c</span><span>
+</span><a name="line-386"></a><span class="hs-comment">-- This is somewhat fragile because we need to keep the</span><span>
+</span><a name="line-387"></a><span class="hs-comment">-- `#if`-conditional in sync with GHC's runtime.</span><span>
+</span><a name="line-388"></a><span>
+</span><a name="line-389"></a><span class="hs-pragma">{-# LINE 383 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-390"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;raise&quot;</span><span>
+</span><a name="line-391"></a><span>  </span><span class="hs-identifier">c_raise</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-392"></a><span>
+</span><a name="line-393"></a><span class="hs-pragma">{-# LINE 386 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-394"></a><span>
+</span><a name="line-395"></a><span>
+</span><a name="line-396"></a><span class="hs-keyword">type</span><span> </span><span class="hs-identifier">Signal</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-397"></a><span>
+</span><a name="line-398"></a><span class="hs-comment">-- | The actions to perform when a signal is received.</span><span>
+</span><a name="line-399"></a><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">Handler</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">Default</span><span>
+</span><a name="line-400"></a><span>             </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">Ignore</span><span>
+</span><a name="line-401"></a><span>             </span><span class="hs-comment">-- not yet: | Hold</span><span>
+</span><a name="line-402"></a><span>             </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">Catch</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-403"></a><span>             </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">CatchOnce</span><span> </span><span class="hs-special">(</span><a name="SignalInfo"><a href="System.Posix.Signals.html#SignalInfo"><span class="hs-identifier">IO</span></a></a><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-404"></a><span>             </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">CatchInfo</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span class="hs-special">)</span><span>     </span><span class="hs-comment">-- ^ @since 2.7.0.0</span><span>
+</span><a name="line-405"></a><span>             </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">CatchInfoOnce</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-comment">-- ^ @since 2.7.0.0</span><span>
+</span><a name="line-406"></a><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><a name="siginfoSpecific"><a href="System.Posix.Signals.html#siginfoSpecific"><span class="hs-identifier">Typeable</span></a></a><span class="hs-special">)</span><span>
+</span><a name="line-407"></a><span>
+</span><a name="line-408"></a><span class="hs-comment">-- | Information about a received signal (derived from @siginfo_t@).</span><span>
+</span><a name="line-409"></a><span class="hs-comment">--</span><span>
+</span><a name="line-410"></a><span class="hs-comment">-- @since 2.7.0.0</span><span>
+</span><a name="line-411"></a><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-special">{</span><span>
+</span><a name="line-412"></a><span>      </span><span class="hs-identifier">siginfoSignal</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span class="hs-special">,</span><span>
+</span><a name="line-413"></a><span>      </span><a name="SignalSpecificInfo"><a href="System.Posix.Signals.html#SignalSpecificInfo"><span class="hs-identifier">siginfoError</span></a></a><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Errno</span><span class="hs-special">,</span><span>
+</span><a name="line-414"></a><span>      </span><a name="NoSignalSpecificInfo"><a href="System.Posix.Signals.html#NoSignalSpecificInfo"><span class="hs-identifier">siginfoSpecific</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSpecificInfo</span><span>
+</span><a name="line-415"></a><span>  </span><span class="hs-special">}</span><span>
+</span><a name="line-416"></a><span>
+</span><a name="line-417"></a><span class="hs-comment">-- | Information specific to a particular type of signal</span><span>
+</span><a name="line-418"></a><span class="hs-comment">-- (derived from @siginfo_t@).</span><span>
+</span><a name="line-419"></a><span class="hs-comment">--</span><span>
+</span><a name="line-420"></a><span class="hs-comment">-- @since 2.7.0.0</span><span>
+</span><a name="line-421"></a><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">SignalSpecificInfo</span><span>
+</span><a name="line-422"></a><span>  </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">NoSignalSpecificInfo</span><span>
+</span><a name="line-423"></a><span>  </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">SigChldInfo</span><span> </span><span class="hs-special">{</span><span>
+</span><a name="line-424"></a><span>      </span><span class="hs-identifier">siginfoPid</span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">ProcessID</span><span class="hs-special">,</span><span>
+</span><a name="line-425"></a><span>      </span><span class="hs-identifier">siginfoUid</span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">UserID</span><span class="hs-special">,</span><span>
+</span><a name="line-426"></a><span>      </span><span class="hs-identifier">siginfoStatus</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">ProcessStatus</span><span>
+</span><a name="line-427"></a><span>    </span><span class="hs-special">}</span><span>
+</span><a name="line-428"></a><span>
+</span><a name="line-429"></a><span class="hs-comment">-- | @installHandler int handler iset@ calls @sigaction@ to install an</span><span>
+</span><a name="line-430"></a><span class="hs-comment">--   interrupt handler for signal @int@.  If @handler@ is @Default@,</span><span>
+</span><a name="line-431"></a><span class="hs-comment">--   @SIG_DFL@ is installed; if @handler@ is @Ignore@, @SIG_IGN@ is</span><span>
+</span><a name="line-432"></a><span class="hs-comment">--   installed; if @handler@ is @Catch action@, a handler is installed</span><span>
+</span><a name="line-433"></a><span class="hs-comment">--   which will invoke @action@ in a new thread when (or shortly after) the</span><span>
+</span><a name="line-434"></a><span class="hs-comment">--   signal is received.</span><span>
+</span><a name="line-435"></a><span class="hs-comment">--   If @iset@ is @Just s@, then the @sa_mask@ of the @sigaction@ structure</span><span>
+</span><a name="line-436"></a><span class="hs-comment">--   is set to @s@; otherwise it is cleared.  The previously installed</span><span>
+</span><a name="line-437"></a><span class="hs-comment">--   signal handler for @int@ is returned</span><span>
+</span><a name="line-438"></a><span class="hs-identifier">installHandler</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span>
+</span><a name="line-439"></a><span>               </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">Handler</span><span>
+</span><a name="line-440"></a><span>               </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">Maybe</span><span> </span><span class="hs-identifier">SignalSet</span><span>       </span><span class="hs-comment">-- ^ other signals to block</span><span>
+</span><a name="line-441"></a><span>               </span><span class="hs-glyph">-&gt;</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Conc.IO.html#ensureIOManagerIsRunning"><span class="hs-identifier hs-var">IO</span></a><span> </span><span class="hs-identifier">Handler</span><span>            </span><span class="hs-comment">-- ^ old handler</span><span>
+</span><a name="line-442"></a><span>
+</span><a name="line-443"></a><span>
+</span><a name="line-444"></a><span class="hs-pragma">{-# LINE 439 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-445"></a><span>
+</span><a name="line-446"></a><span class="hs-identifier">installHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-identifier">handler</span><span> </span><span class="hs-identifier">_maybe_mask</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-447"></a><span>  </span><span class="hs-identifier">ensureIOManagerIsRunning</span><span>  </span><span class="hs-comment">-- for the threaded RTS</span><span>
+</span><a name="line-448"></a><span>
+</span><a name="line-449"></a><span>  </span><span class="hs-comment">-- if we're setting the action to DFL or IGN, we should do that *first*</span><span>
+</span><a name="line-450"></a><span>  </span><span class="hs-comment">-- if we're setting a handler,</span><span>
+</span><a name="line-451"></a><span>  </span><span class="hs-comment">--   if the previous action was handle, then setHandler is ok</span><span>
+</span><a name="line-452"></a><span>  </span><span class="hs-comment">--   if the previous action was IGN/DFL, then setHandler followed by sig_install</span><span>
+</span><a name="line-453"></a><span>  </span><span class="hs-special">(</span><span class="hs-identifier">old_action</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">old_handler</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span>
+</span><a name="line-454"></a><span>    </span><span class="hs-keyword">case</span><span> </span><span class="hs-identifier">handler</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-455"></a><span>      </span><span class="hs-identifier">Ignore</span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-456"></a><span>        </span><a name="local-6989586621679054570"><a href="#local-6989586621679054570"><span class="hs-identifier">old_action</span></a></a><span>  </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">stg_sig_install</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Base.html#Nothing"><span class="hs-identifier hs-var">sig</span></a><span> </span><span class="hs-identifier">STG_SIG_IGN</span><span> </span><span class="hs-identifier">nullPtr</span><span>
+</span><a name="line-457"></a><span>        </span><span class="hs-identifier">old_handler</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><a href="#local-6989586621679054570"><span class="hs-identifier hs-var">sig</span></a><span> </span><span class="hs-identifier">Nothing</span><span>
+</span><a name="line-458"></a><span>        </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">old_action</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">old_handler</span><span class="hs-special">)</span><span>
+</span><a name="line-459"></a><span>
+</span><a name="line-460"></a><span>      </span><span class="hs-identifier">Default</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-461"></a><span>        </span><span class="hs-identifier">old_action</span><span>  </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">stg_sig_install</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-identifier">STG_SIG_DFL</span><span> </span><span class="hs-identifier">nullPtr</span><span>
+</span><a name="line-462"></a><span>        </span><span class="hs-identifier">old_handler</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-identifier">Nothing</span><span>
+</span><a name="line-463"></a><span>        </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">old_action</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">old_handler</span><span class="hs-special">)</span><span>
+</span><a name="line-464"></a><span>
+</span><a name="line-465"></a><span>      </span><span class="hs-identifier">_some_kind_of_catch</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-466"></a><span>        </span><span class="hs-comment">-- I don't think it's possible to get CatchOnce right.  If</span><span>
+</span><a name="line-467"></a><span>        </span><span class="hs-comment">-- there's a signal in flight, then we might run the handler</span><span>
+</span><a name="line-468"></a><span>        </span><span class="hs-comment">-- more than once.</span><span>
+</span><a name="line-469"></a><span>        </span><span class="hs-keyword">let</span><span> </span><span class="hs-identifier">dyn</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">toDyn</span><span> </span><span class="hs-identifier">handler</span><span>
+</span><a name="line-470"></a><span>        </span><span class="hs-identifier">old_handler</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-identifier">handler</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-471"></a><span>            </span><a name="local-6989586621679054578"><a href="#local-6989586621679054578"><span class="hs-identifier">Catch</span></a></a><span>         </span><a href="#local-6989586621679054529"><span class="hs-identifier hs-var">action</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">const</span><span> </span><span class="hs-identifier">action</span><span class="hs-special">,</span><span class="hs-identifier">dyn</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-472"></a><span>            </span><span class="hs-identifier">CatchOnce</span><span>     </span><span class="hs-identifier">action</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">const</span><span> </span><span class="hs-identifier">action</span><span class="hs-special">,</span><span class="hs-identifier">dyn</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-473"></a><span>            </span><span class="hs-identifier">CatchInfo</span><span>     </span><span class="hs-identifier">action</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">getinfo</span><span> </span><span class="hs-identifier">action</span><span class="hs-special">,</span><span class="hs-identifier">dyn</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-474"></a><span>            </span><span class="hs-identifier">CatchInfoOnce</span><span> </span><span class="hs-identifier">action</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">setHandler</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">getinfo</span><span> </span><span class="hs-identifier">action</span><span class="hs-special">,</span><span class="hs-identifier">dyn</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-475"></a><span>            </span><span class="hs-identifier">_</span><span>                    </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">error</span><span> </span><span class="hs-string">&quot;installHandler&quot;</span><span>
+</span><a name="line-476"></a><span>
+</span><a name="line-477"></a><span>        </span><span class="hs-keyword">let</span><span> </span><span class="hs-identifier">action</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-identifier">handler</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-478"></a><span>                </span><span class="hs-identifier">Catch</span><span> </span><a href="System.Posix.Signals.html#stg_sig_install"><span class="hs-identifier hs-var">_</span></a><span>         </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">STG_SIG_HAN</span><span>
+</span><a name="line-479"></a><span>                </span><span class="hs-identifier">CatchOnce</span><span> </span><span class="hs-identifier">_</span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">STG_SIG_RST</span><span>
+</span><a name="line-480"></a><span>                </span><span class="hs-identifier">CatchInfo</span><span> </span><span class="hs-identifier">_</span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">STG_SIG_HAN</span><span>
+</span><a name="line-481"></a><span>                </span><span class="hs-identifier">CatchInfoOnce</span><span> </span><a href="#local-6989586621679054577"><span class="hs-identifier hs-var">_</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">STG_SIG_RST</span><span>
+</span><a name="line-482"></a><span>                </span><span class="hs-identifier">_</span><span>               </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">error</span><span> </span><span class="hs-string">&quot;installHandler&quot;</span><span>
+</span><a name="line-483"></a><span>
+</span><a name="line-484"></a><span>        </span><span class="hs-identifier">old_action</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">stg_sig_install</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-identifier">action</span><span> </span><span class="hs-identifier">nullPtr</span><span>
+</span><a name="line-485"></a><span>                   </span><span class="hs-comment">-- mask is pointless, so leave it NULL</span><span>
+</span><a name="line-486"></a><span>
+</span><a name="line-487"></a><span>        </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">old_action</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">old_handler</span><span class="hs-special">)</span><span>
+</span><a name="line-488"></a><span>
+</span><a name="line-489"></a><span>  </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">old_handler</span><span class="hs-special">,</span><span class="hs-identifier">old_action</span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-490"></a><span>    </span><span class="hs-special">(</span><span class="hs-identifier">_</span><span class="hs-special">,</span><span>       </span><span class="hs-identifier">STG_SIG_DFL</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">Default</span><span>
+</span><a name="line-491"></a><span>    </span><span class="hs-special">(</span><span class="hs-identifier">_</span><span class="hs-special">,</span><span>       </span><span class="hs-identifier">STG_SIG_IGN</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">Ignore</span><span>
+</span><a name="line-492"></a><span>    </span><span class="hs-special">(</span><span class="hs-identifier">Nothing</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span>           </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">Ignore</span><span>
+</span><a name="line-493"></a><span>    </span><span class="hs-special">(</span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">_</span><span class="hs-special">,</span><span class="hs-identifier">dyn</span><span class="hs-special">)</span><span class="hs-special">,</span><span>  </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span>
+</span><a name="line-494"></a><span>        </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">Just</span><span> </span><span class="hs-identifier">h</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">fromDynamic</span><span> </span><span class="hs-identifier">dyn</span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">h</span><span>
+</span><a name="line-495"></a><span>        </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">Just</span><span> </span><span class="hs-identifier">io</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">fromDynamic</span><span> </span><span class="hs-identifier">dyn</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">Catch</span><span> </span><span class="hs-identifier">io</span><span class="hs-special">)</span><span>
+</span><a name="line-496"></a><span>        </span><span class="hs-comment">-- handlers put there by the base package have type IO ()</span><span>
+</span><a name="line-497"></a><span>        </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">otherwise</span><span>                  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">Default</span><span>
+</span><a name="line-498"></a><span>
+</span><a name="line-499"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span>
+</span><a name="line-500"></a><span>  </span><span class="hs-identifier">stg_sig_install</span><span>
+</span><a name="line-501"></a><span>        </span><span class="hs-glyph">::</span><span> </span><a name="local-6989586621679054585"><a href="#local-6989586621679054585"><span class="hs-identifier">CInt</span></a></a><span>                         </span><span class="hs-comment">-- sig no.</span><span>
+</span><a name="line-502"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><a href="System.Posix.Signals.html#unmarshalSigInfo"><span class="hs-identifier hs-var">CInt</span></a><span>                         </span><span class="hs-comment">-- action code (STG_SIG_HAN etc.)</span><span>
+</span><a name="line-503"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span>                  </span><span class="hs-comment">-- (in, out) blocked</span><span>
+</span><a name="line-504"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>                      </span><span class="hs-comment">-- (ret) old action code</span><span>
+</span><a name="line-505"></a><span>
+</span><a name="line-506"></a><a name="unmarshalSigInfo"><a href="System.Posix.Signals.html#unmarshalSigInfo"><span class="hs-identifier">getinfo</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">ForeignPtr</span><span> </span><span class="hs-identifier">Word8</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-507"></a><span class="hs-identifier">getinfo</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.ForeignPtr.Imp.html#withForeignPtr"><span class="hs-identifier hs-var">handler</span></a><span> </span><span class="hs-identifier">fp_info</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-508"></a><span>  </span><span class="hs-identifier">si</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">unmarshalSigInfo</span><span> </span><span class="hs-identifier">fp_info</span><span>
+</span><a name="line-509"></a><span>  </span><span class="hs-identifier">handler</span><span> </span><span class="hs-identifier">si</span><span>
+</span><a name="line-510"></a><span>
+</span><a name="line-511"></a><span class="hs-identifier">unmarshalSigInfo</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">ForeignPtr</span><span> </span><span class="hs-identifier">Word8</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">SignalInfo</span><span>
+</span><a name="line-512"></a><span class="hs-identifier">unmarshalSigInfo</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-513"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><a name="local-6989586621679054597"><a href="#local-6989586621679054597"><span class="hs-operator">$</span></a></a><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-514"></a><span>    </span><span class="hs-identifier">sig</span><span>   </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">peekByteOff</span><span> </span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-number">0</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.Storable.html#peekByteOff"><span class="hs-identifier hs-var">p</span></a><span>
+</span><a name="line-515"></a><span class="hs-pragma">{-# LINE 509 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-516"></a><span>    </span><span class="hs-identifier">errno</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="System.Posix.Signals.html#SigChldInfo"><span class="hs-identifier hs-var">peekByteOff</span></a><span> </span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-number">4</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">p</span><span>
+</span><a name="line-517"></a><span class="hs-pragma">{-# LINE 510 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-518"></a><span>    </span><span class="hs-identifier">extra</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-519"></a><span>                </span><span class="hs-identifier">_</span><span> </span><span class="hs-glyph">|</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Base.html#otherwise"><span class="hs-identifier hs-var">sig</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Base.html#otherwise"><span class="hs-operator hs-var">==</span></a><span> </span><span class="hs-identifier">sigCHLD</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-520"></a><span>                    </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Base.html#return"><span class="hs-identifier hs-var">pid</span></a><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="hs-glyph">\</span><a href="System.Posix.Signals.html#NoSignalSpecificInfo"><span class="hs-identifier hs-var">hsc_ptr</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">peekByteOff</span><span> </span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-number">16</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">p</span><span>
+</span><a name="line-521"></a><span class="hs-pragma">{-# LINE 513 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-522"></a><span>                    </span><span class="hs-identifier">uid</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">peekByteOff</span><span> </span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-number">20</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">p</span><span>
+</span><a name="line-523"></a><span class="hs-pragma">{-# LINE 514 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-524"></a><span>                    </span><span class="hs-identifier">wstat</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">peekByteOff</span><span> </span><span class="hs-identifier">hsc_ptr</span><span> </span><span class="hs-number">24</span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">p</span><span>
+</span><a name="line-525"></a><span class="hs-pragma">{-# LINE 515 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-526"></a><span>                    </span><span class="hs-identifier">pstat</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">decipherWaitStatus</span><span> </span><span class="hs-identifier">wstat</span><span>
+</span><a name="line-527"></a><span>                    </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">SigChldInfo</span><span> </span><span class="hs-special">{</span><span> </span><span class="hs-identifier">siginfoPid</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">pid</span><span class="hs-special">,</span><span>
+</span><a name="line-528"></a><span>                                         </span><span class="hs-identifier">siginfoUid</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">uid</span><span class="hs-special">,</span><span>
+</span><a name="line-529"></a><span>                                         </span><span class="hs-identifier">siginfoStatus</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">pstat</span><span> </span><span class="hs-special">}</span><span>
+</span><a name="line-530"></a><span>                </span><span class="hs-identifier">_</span><span> </span><span class="hs-glyph">|</span><span> </span><span class="hs-identifier">otherwise</span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-531"></a><span>                    </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">NoSignalSpecificInfo</span><span>
+</span><a name="line-532"></a><span>    </span><span class="hs-identifier">return</span><span>
+</span><a name="line-533"></a><span>      </span><span class="hs-identifier">SignalInfo</span><span> </span><span class="hs-special">{</span><span>
+</span><a name="line-534"></a><span>        </span><span class="hs-identifier">siginfoSignal</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">,</span><span>
+</span><a name="line-535"></a><span>        </span><span class="hs-identifier">siginfoError</span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">Errno</span><span> </span><span class="hs-identifier">errno</span><span class="hs-special">,</span><span>
+</span><a name="line-536"></a><span>        </span><span class="hs-identifier">siginfoSpecific</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">extra</span><span> </span><span class="hs-special">}</span><span>
+</span><a name="line-537"></a><span>
+</span><a name="line-538"></a><span>
+</span><a name="line-539"></a><span class="hs-pragma">{-# LINE 528 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-540"></a><span>
+</span><a name="line-541"></a><span class="hs-comment">-- -----------------------------------------------------------------------------</span><span>
+</span><a name="line-542"></a><span class="hs-comment">-- Alarms</span><span>
+</span><a name="line-543"></a><span>
+</span><a name="line-544"></a><span class="hs-comment">-- | @scheduleAlarm i@ calls @alarm@ to schedule a real time</span><span>
+</span><a name="line-545"></a><span class="hs-comment">--   alarm at least @i@ seconds in the future.</span><span>
+</span><a name="line-546"></a><span class="hs-identifier">scheduleAlarm</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Int</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">Int</span><span>
+</span><a name="line-547"></a><span class="hs-identifier">scheduleAlarm</span><span> </span><span class="hs-identifier">secs</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-548"></a><span>   </span><span class="hs-identifier">r</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">c_alarm</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">fromIntegral</span><span> </span><span class="hs-identifier">secs</span><span class="hs-special">)</span><span>
+</span><a name="line-549"></a><span>   </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">fromIntegral</span><span> </span><span class="hs-identifier hs-type">r</span><span class="hs-special">)</span><span>
+</span><a name="line-550"></a><span>
+</span><a name="line-551"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><a href="System.Posix.Signals.html#nocldstop"><span class="hs-identifier hs-var">ccall</span></a><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;alarm&quot;</span><span>
+</span><a name="line-552"></a><span>  </span><span class="hs-identifier">c_alarm</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="System.Posix.Signals.html#nocldstop"><span class="hs-identifier hs-var">CUInt</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Enum.html#fromEnum"><span class="hs-identifier hs-var">IO</span></a><span> </span><span class="hs-identifier">CUInt</span><span>
+</span><a name="line-553"></a><span>
+</span><a name="line-554"></a><span class="hs-comment">-- -----------------------------------------------------------------------------</span><span>
+</span><a name="line-555"></a><span class="hs-comment">-- The NOCLDSTOP flag</span><span>
+</span><a name="line-556"></a><span>
+</span><a name="line-557"></a><a name="queryStoppedChildFlag"><a href="System.Posix.Signals.html#queryStoppedChildFlag"><span class="hs-identifier">foreign</span></a></a><span> </span><span class="hs-keyword">import</span><span> </span><a name="queryStoppedChildFlag"><a href="System.Posix.Signals.html#queryStoppedChildFlag"><span class="hs-identifier">ccall</span></a></a><span> </span><span class="hs-string">&quot;&amp;nocldstop&quot;</span><span> </span><span class="hs-identifier">nocldstop</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">Int</span><span>
+</span><a name="line-558"></a><span>
+</span><a name="line-559"></a><span class="hs-comment">-- | Tells the system whether or not to set the @SA_NOCLDSTOP@ flag when</span><span>
+</span><a name="line-560"></a><span class="hs-comment">-- installing new signal handlers.</span><span>
+</span><a name="line-561"></a><span class="hs-identifier">setStoppedChildFlag</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Bool</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">Bool</span><span>
+</span><a name="line-562"></a><span class="hs-identifier">setStoppedChildFlag</span><span> </span><span class="hs-identifier">b</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-563"></a><span>    </span><span class="hs-identifier">rc</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">peek</span><span> </span><span class="hs-identifier">nocldstop</span><span>
+</span><a name="line-564"></a><span>    </span><span class="hs-identifier">poke</span><span> </span><span class="hs-identifier">nocldstop</span><span> </span><span class="hs-operator">$</span><span> </span><a name="SignalSet"><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier">fromEnum</span></a></a><span> </span><span class="hs-special">(</span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#ForeignPtr"><span class="hs-identifier hs-type">not</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#ForeignPtr"><span class="hs-identifier hs-type">b</span></a><span class="hs-special">)</span><span>
+</span><a name="line-565"></a><span>    </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">rc</span><span> </span><span class="hs-operator">==</span><span> </span><span class="hs-special">(</span><span class="hs-number">0</span><span class="hs-glyph">::</span><span class="hs-identifier">Int</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-566"></a><span>
+</span><a name="line-567"></a><span class="hs-comment">-- | Queries the current state of the stopped child flag.</span><span>
+</span><a name="line-568"></a><span class="hs-identifier">queryStoppedChildFlag</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">IO</span></a><span> </span><span class="hs-identifier">Bool</span><span>
+</span><a name="line-569"></a><span class="hs-identifier">queryStoppedChildFlag</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-570"></a><span>    </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.Base.html#return"><span class="hs-identifier hs-var">rc</span></a><span> </span><span class="hs-glyph">&lt;-</span><span> </span><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier hs-var">peek</span></a><span> </span><span class="hs-identifier">nocldstop</span><span>
+</span><a name="line-571"></a><span>    </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">rc</span><span> </span><span class="hs-operator">==</span><span> </span><span class="hs-special">(</span><span class="hs-number">0</span><span class="hs-glyph">::</span><span class="hs-identifier">Int</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a name="line-572"></a><span>
+</span><a name="line-573"></a><span class="hs-comment">-- -----------------------------------------------------------------------------</span><span>
+</span><a name="line-574"></a><span class="hs-comment">-- Manipulating signal sets</span><span>
+</span><a name="line-575"></a><span>
+</span><a name="line-576"></a><span class="hs-keyword">newtype</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">ForeignPtr</span><span> </span><span class="hs-identifier">CSigset</span><span class="hs-special">)</span><span>
+</span><a name="line-577"></a><span>
+</span><a name="line-578"></a><span class="hs-identifier">emptySignalSet</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-579"></a><span class="hs-identifier">emptySignalSet</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">unsafePerformIO</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-580"></a><span>  </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-581"></a><span>  </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;emptySignalSet&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">withForeignPtr</span><span> </span><a href="System.Posix.Signals.html#emptySignalSet"><span class="hs-identifier hs-var">fp</span></a><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">c_sigemptyset</span><span class="hs-special">)</span><span>
+</span><a name="line-582"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span class="hs-special">)</span><span>
+</span><a name="line-583"></a><span>
+</span><a name="line-584"></a><span class="hs-identifier">fullSignalSet</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-585"></a><span class="hs-identifier">fullSignalSet</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">unsafePerformIO</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-586"></a><span>  </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-587"></a><span>  </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;fullSignalSet&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">c_sigfillset</span><span class="hs-special">)</span><span>
+</span><a name="line-588"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">SignalSet</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">fp</span></a><span class="hs-special">)</span><span>
+</span><a name="line-589"></a><span>
+</span><a name="line-590"></a><span class="hs-comment">-- | A set of signals reserved for use by the implementation.  In GHC, this will normally</span><span>
+</span><a name="line-591"></a><span class="hs-comment">-- include either `sigVTALRM` or `sigALRM`.</span><span>
+</span><a name="line-592"></a><span class="hs-identifier">reservedSignals</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-593"></a><span class="hs-identifier">reservedSignals</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">addSignal</span><span> </span><span class="hs-identifier">rtsTimerSignal</span><span> </span><span class="hs-identifier">emptySignalSet</span><span>
+</span><a name="line-594"></a><span>
+</span><a name="line-595"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">rtsTimerSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier hs-type">CInt</span></a><span>
+</span><a name="line-596"></a><span>
+</span><a name="line-597"></a><span class="hs-keyword">infixr</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">addSignal</span><span class="hs-special">`</span><span class="hs-special">,</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">deleteSignal</span><span class="hs-special">`</span><span>
+</span><a name="line-598"></a><span class="hs-identifier">addSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Signal</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-599"></a><span class="hs-identifier">addSignal</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.ForeignPtr.Imp.html#withForeignPtr"><span class="hs-identifier hs-var">sig</span></a><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp1</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">unsafePerformIO</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-600"></a><span>  </span><span class="hs-identifier">fp2</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-601"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1_"><span class="hs-identifier hs-var">fp1</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1_"><span class="hs-operator hs-var">$</span></a><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p1</span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-602"></a><span>    </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp2</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p2</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-603"></a><span>      </span><span class="hs-identifier">copyBytes</span><span> </span><span class="hs-identifier">p2</span><span> </span><span class="hs-identifier">p1</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-604"></a><span>      </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;addSignal&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigaddset</span><span> </span><span class="hs-identifier">p2</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-605"></a><span>  </span><a name="inSignalSet"><a href="System.Posix.Signals.html#inSignalSet"><span class="hs-identifier">return</span></a></a><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier hs-var">fp2</span></a><span class="hs-special">)</span><span>
+</span><a name="line-606"></a><span>
+</span><a name="line-607"></a><span class="hs-identifier">deleteSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1"><span class="hs-identifier hs-var">Signal</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-608"></a><span class="hs-identifier">deleteSignal</span><span> </span><span class="hs-identifier">sig</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp1</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">unsafePerformIO</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-609"></a><span>  </span><span class="hs-identifier">fp2</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-610"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp1</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p1</span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-611"></a><span>    </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp2</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p2</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-612"></a><span>      </span><span class="hs-identifier">copyBytes</span><span> </span><span class="hs-identifier">p2</span><span> </span><span class="hs-identifier">p1</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-613"></a><span>      </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;deleteSignal&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigdelset</span><span> </span><span class="hs-identifier">p2</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-614"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">SignalSet</span></a><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">fp2</span></a><span class="hs-special">)</span><span>
+</span><a name="line-615"></a><span>
+</span><a name="line-616"></a><span class="hs-identifier">inSignalSet</span><span> </span><span class="hs-glyph">::</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/Foreign.C.Error.html#throwErrnoIfMinus1_"><span class="hs-identifier hs-var">Signal</span></a><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">Bool</span><span>
+</span><a name="line-617"></a><span class="hs-identifier">inSignalSet</span><span> </span><a href="System.Posix.Signals.html#SignalSet"><span class="hs-identifier hs-var">sig</span></a><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">unsafePerformIO</span><span> </span><span class="hs-operator">$</span><span>
+</span><a name="line-618"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-619"></a><span>    </span><span class="hs-identifier">r</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">throwErrnoIfMinus1</span><span> </span><span class="hs-string">&quot;inSignalSet&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigismember</span><span> </span><span class="hs-identifier">p</span><span> </span><span class="hs-identifier">sig</span><span class="hs-special">)</span><span>
+</span><a name="line-620"></a><span>    </span><a name="sigProcMask"><a href="System.Posix.Signals.html#sigProcMask"><span class="hs-identifier">return</span></a></a><span> </span><span class="hs-special">(</span><a name="local-6989586621679054625"><a href="#local-6989586621679054625"><span class="hs-identifier">r</span></a></a><span> </span><span class="hs-operator">/=</span><span> </span><span class="hs-number">0</span><span class="hs-special">)</span><span>
+</span><a name="line-621"></a><span>
+</span><a name="line-622"></a><span class="hs-comment">-- | @getSignalMask@ calls @sigprocmask@ to determine the</span><span>
+</span><a name="line-623"></a><span class="hs-comment">--   set of interrupts which are currently being blocked.</span><span>
+</span><a name="line-624"></a><span class="hs-identifier">getSignalMask</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-625"></a><span class="hs-identifier">getSignalMask</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-626"></a><span>  </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-627"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><a href="System.Posix.Signals.html#sigProcMask"><span class="hs-operator hs-var">$</span></a><span> </span><span class="hs-glyph">\</span><a href="System.Posix.Signals.html#sigProcMask"><span class="hs-identifier hs-var">p</span></a><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-628"></a><span>    </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;getSignalMask&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigprocmask</span><span> </span><span class="hs-number">0</span><span> </span><span class="hs-identifier">nullPtr</span><span> </span><span class="hs-identifier">p</span><span class="hs-special">)</span><span>
+</span><a name="line-629"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span class="hs-special">)</span><span>
+</span><a name="line-630"></a><span>
+</span><a name="line-631"></a><span class="hs-identifier">sigProcMask</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">String</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-632"></a><span class="hs-identifier">sigProcMask</span><span> </span><span class="hs-identifier">fn</span><span> </span><span class="hs-identifier">how</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">set</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a name="line-633"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">set</span><span> </span><a href="System.Posix.Signals.html#sigProcMask"><span class="hs-operator hs-var">$</span></a><span> </span><span class="hs-glyph">\</span><a href="System.Posix.Signals.html#sigProcMask"><span class="hs-identifier hs-var">p_set</span></a><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-634"></a><span>    </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-identifier">fn</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigprocmask</span><span> </span><span class="hs-identifier">how</span><span> </span><span class="hs-identifier">p_set</span><span> </span><span class="hs-identifier">nullPtr</span><span class="hs-special">)</span><span>
+</span><a name="line-635"></a><span>
+</span><a name="line-636"></a><span class="hs-comment">-- | @setSignalMask mask@ calls @sigprocmask@ with</span><span>
+</span><a name="line-637"></a><span class="hs-comment">--   @SIG_SETMASK@ to block all interrupts in @mask@.</span><span>
+</span><a name="line-638"></a><span class="hs-identifier">setSignalMask</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-639"></a><a name="unblockSignals"><a href="System.Posix.Signals.html#unblockSignals"><span class="hs-identifier">setSignalMask</span></a></a><span> </span><span class="hs-identifier">set</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigProcMask</span><span> </span><span class="hs-string">&quot;setSignalMask&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">CONST_SIG_SETMASK</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">set</span><span>
+</span><a name="line-640"></a><span>
+</span><a name="line-641"></a><span class="hs-comment">-- | @blockSignals mask@ calls @sigprocmask@ with</span><span>
+</span><a name="line-642"></a><span class="hs-comment">--   @SIG_BLOCK@ to add all interrupts in @mask@ to the</span><span>
+</span><a name="line-643"></a><span class="hs-comment">--  set of blocked interrupts.</span><span>
+</span><a name="line-644"></a><a name="getPendingSignals"><a href="System.Posix.Signals.html#getPendingSignals"><span class="hs-identifier">blockSignals</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-645"></a><span class="hs-identifier">blockSignals</span><span> </span><a href="../base-4.11.0.0/src/%{MODULE/./-}.html#%{NAME}/GHC.ForeignPtr.html#mallocForeignPtrBytes"><span class="hs-identifier hs-var">set</span></a><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigProcMask</span><span> </span><span class="hs-string">&quot;blockSignals&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">CONST_SIG_BLOCK</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">set</span><span>
+</span><a name="line-646"></a><span>
+</span><a name="line-647"></a><span class="hs-comment">-- | @unblockSignals mask@ calls @sigprocmask@ with</span><span>
+</span><a name="line-648"></a><span class="hs-comment">--   @SIG_UNBLOCK@ to remove all interrupts in @mask@ from the</span><span>
+</span><a name="line-649"></a><span class="hs-comment">--   set of blocked interrupts.</span><span>
+</span><a name="line-650"></a><span class="hs-identifier">unblockSignals</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-651"></a><span class="hs-identifier">unblockSignals</span><span> </span><span class="hs-identifier">set</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-identifier">sigProcMask</span><span> </span><span class="hs-string">&quot;unblockSignals&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">CONST_SIG_UNBLOCK</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">CInt</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">set</span><span>
+</span><a name="line-652"></a><span>
+</span><a name="line-653"></a><span class="hs-comment">-- | @getPendingSignals@ calls @sigpending@ to obtain</span><span>
+</span><a name="line-654"></a><span class="hs-comment">--   the set of interrupts which have been received but are currently blocked.</span><span>
+</span><a name="line-655"></a><span class="hs-identifier">getPendingSignals</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">SignalSet</span><span>
+</span><a name="line-656"></a><span class="hs-identifier">getPendingSignals</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-657"></a><span>  </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">mallocForeignPtrBytes</span><span> </span><span class="hs-identifier">sizeof_sigset_t</span><span>
+</span><a name="line-658"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p</span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><a name="line-659"></a><span>   </span><span class="hs-identifier">throwErrnoIfMinus1_</span><span> </span><span class="hs-string">&quot;getPendingSignals&quot;</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">c_sigpending</span><span> </span><span class="hs-identifier">p</span><span class="hs-special">)</span><span>
+</span><a name="line-660"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span class="hs-special">)</span><span>
+</span><a name="line-661"></a><span>
+</span><a name="line-662"></a><span class="hs-comment">-- | @awaitSignal iset@ suspends execution until an interrupt is received.</span><span>
+</span><a name="line-663"></a><span class="hs-comment">-- If @iset@ is @Just s@, @awaitSignal@ calls @sigsuspend@, installing</span><span>
+</span><a name="line-664"></a><span class="hs-comment">-- @s@ as the new signal mask before suspending execution; otherwise, it</span><span>
+</span><a name="line-665"></a><span class="hs-comment">-- calls @sigsuspend@ with current signal mask. Note that RTS</span><span>
+</span><a name="line-666"></a><span class="hs-comment">-- scheduler signal (either 'virtualTimerExpired' or 'realTimeAlarm')</span><span>
+</span><a name="line-667"></a><span class="hs-comment">-- could cause premature termination of this call. It might be necessary to block that</span><span>
+</span><a name="line-668"></a><span class="hs-comment">-- signal before invocation of @awaitSignal@ with 'blockSignals' 'reservedSignals'.</span><span>
+</span><a name="line-669"></a><span class="hs-comment">--</span><span>
+</span><a name="line-670"></a><span class="hs-comment">-- @awaitSignal@ returns when signal was received and processed by a</span><span>
+</span><a name="line-671"></a><span class="hs-comment">-- signal handler, or if the signal could not be caught. If you have</span><span>
+</span><a name="line-672"></a><span class="hs-comment">-- installed any signal handlers with @installHandler@, it may be wise</span><span>
+</span><a name="line-673"></a><span class="hs-comment">-- to call @yield@ directly after @awaitSignal@ to ensure that the</span><span>
+</span><a name="line-674"></a><span class="hs-comment">-- signal handler runs as promptly as possible.</span><span>
+</span><a name="line-675"></a><span class="hs-identifier">awaitSignal</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Maybe</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-676"></a><span class="hs-identifier">awaitSignal</span><span> </span><span class="hs-identifier">maybe_sigset</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-677"></a><span>  </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-identifier">maybe_sigset</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a name="line-678"></a><span>          </span><span class="hs-identifier">Nothing</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span> </span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">getSignalMask</span><span class="hs-special">;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">fp</span><span>
+</span><a name="line-679"></a><span>          </span><span class="hs-identifier">Just</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">SignalSet</span><span> </span><span class="hs-identifier">fp</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">return</span><span> </span><span class="hs-identifier">fp</span><span>
+</span><a name="line-680"></a><span>  </span><span class="hs-identifier">withForeignPtr</span><span> </span><span class="hs-identifier">fp</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-glyph">\</span><span class="hs-identifier">p</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a name="line-681"></a><span>  </span><span class="hs-identifier">_</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-identifier">c_sigsuspend</span><span> </span><span class="hs-identifier">p</span><span>
+</span><a name="line-682"></a><span>  </span><span class="hs-identifier">return</span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><a name="line-683"></a><span>  </span><span class="hs-comment">-- ignore the return value; according to the docs it can only ever be</span><span>
+</span><a name="line-684"></a><span>  </span><span class="hs-comment">-- (-1) with errno set to EINTR.</span><span>
+</span><a name="line-685"></a><span>  </span><span class="hs-comment">-- XXX My manpage says it can also return EFAULT. And why is ignoring</span><span>
+</span><a name="line-686"></a><span>  </span><span class="hs-comment">-- EINTR the right thing to do?</span><span>
+</span><a name="line-687"></a><span>
+</span><a name="line-688"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;sigsuspend&quot;</span><span>
+</span><a name="line-689"></a><span>  </span><span class="hs-identifier">c_sigsuspend</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-690"></a><span>
+</span><a name="line-691"></a><span>
+</span><a name="line-692"></a><span class="hs-pragma">{-# LINE 691 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-693"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">capi</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;signal.h sigdelset&quot;</span><span>
+</span><a name="line-694"></a><span>  </span><span class="hs-identifier">c_sigdelset</span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-695"></a><span>
+</span><a name="line-696"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">capi</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;signal.h sigfillset&quot;</span><span>
+</span><a name="line-697"></a><span>  </span><span class="hs-identifier">c_sigfillset</span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-698"></a><span>
+</span><a name="line-699"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">capi</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;signal.h sigismember&quot;</span><span>
+</span><a name="line-700"></a><span>  </span><span class="hs-identifier">c_sigismember</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">CInt</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-701"></a><span>
+</span><a name="line-702"></a><span class="hs-pragma">{-# LINE 700 &quot;libraries/unix/System/Posix/Signals.hsc&quot; #-}</span><span>
+</span><a name="line-703"></a><span>
+</span><a name="line-704"></a><span class="hs-identifier">foreign</span><span> </span><span class="hs-keyword">import</span><span> </span><span class="hs-identifier">ccall</span><span> </span><span class="hs-identifier">unsafe</span><span> </span><span class="hs-string">&quot;sigpending&quot;</span><span>
+</span><a name="line-705"></a><span>  </span><span class="hs-identifier">c_sigpending</span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-identifier">Ptr</span><span> </span><span class="hs-identifier">CSigset</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-identifier">IO</span><span> </span><span class="hs-identifier">CInt</span><span>
+</span><a name="line-706"></a></pre></body></html>
